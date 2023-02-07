@@ -1,0 +1,11 @@
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: EventListener
+metadata:
+  name: catalog
+spec:
+  serviceAccountName: pipeline
+  triggers:
+  - bindings:
+    - ref: coolstore
+    template:
+      ref: catalog

@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  annotations:
+    openshift.io/display-name:  Coolstore Pipelines
+    app.openshift.io/vcs-uri: https://github.com/gitops-examples/coolstore
+    app.openshift.io/vcs-ref: main
+  name: coolstore-cicd

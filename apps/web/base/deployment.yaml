@@ -1,0 +1,55 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  annotations:
+    alpha.image.policy.openshift.io/resolve-names: '*'
+    app.openshift.io/route-disabled: 'false'
+    app.openshift.io/vcs-ref: ''
+    app.openshift.io/vcs-uri: 'https://github.com/modernizing-java-applications-book/web-nodejs.git'
+  name: web-nodejs
+  labels:
+    app: web-nodejs
+    app.kubernetes.io/component: web-nodejs
+    app.kubernetes.io/instance: web-nodejs
+    app.kubernetes.io/name: web-nodejs
+    app.kubernetes.io/part-of: coolstore
+    app.openshift.io/runtime: nodejs
+    app.openshift.io/runtime-version: 16-ubi8
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web-nodejs
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: web-nodejs
+        deployment: web-nodejs
+    spec:
+      containers:
+        - name: web-nodejs
+          image: quay.io/bluesman/web-nodejs:latest
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          env:
+            - name: SECURE_COOLSTORE_GW_ENDPOINT
+              value: >-
+                https://gateway-vertx-coolstore-prod.apps.skatt.rl97.p1.openshiftapps.com/
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: Always
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      schedulerName: default-scheduler
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+  revisionHistoryLimit: 10
+  progressDeadlineSeconds: 600

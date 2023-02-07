@@ -1,0 +1,121 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: gateway-pipeline
+spec:
+  params:
+  - default: 1.0.0
+    name: IMAGE_TAG
+    type: string
+  - default: quay.io/bluesman/gateway-vertx
+    name: IMAGE_NAME
+    type: string
+  - default: https://github.com/modernizing-java-applications-book/gateway-vertx.git
+    name: GIT_REPO
+    type: string
+  - default: main
+    name: GIT_BRANCH
+    type: string
+  - default: https://github.com/modernizing-java-applications-book/gitops-manifests
+    name: MANIFESTS_GIT_REPO
+    type: string
+  - default: main
+    name: MANIFESTS_GIT_BRANCH
+    type: string
+  tasks:
+  - name: git-clone
+    params:
+    - name: url
+      value: $(params.GIT_REPO)
+    - name: revision
+      value: $(params.GIT_BRANCH)
+    - name: submodules
+      value: "true"
+    - name: depth
+      value: "1"
+    - name: sslVerify
+      value: "true"
+    - name: crtFileName
+      value: ca-bundle.crt
+    - name: deleteExisting
+      value: "true"
+    - name: verbose
+      value: "true"
+    - name: gitInitImage
+      value: registry.redhat.io/openshift-pipelines/pipelines-git-init-rhel8@sha256:cadf614a6044ee37397de3abe7674827ecab225e7fac9fb123eff5473e2c4003
+    - name: userHome
+      value: /tekton/home
+    taskRef:
+      kind: ClusterTask
+      name: git-clone
+    workspaces:
+    - name: output
+      workspace: source
+  - name: maven
+    params:
+    - name: GOALS
+      value:
+      - package
+    - name: PROXY_PROTOCOL
+      value: http
+    - name: CONTEXT_DIR
+      value: .
+    runAfter:
+    - git-clone
+    taskRef:
+      kind: ClusterTask
+      name: maven
+    workspaces:
+    - name: maven-settings
+      workspace: maven-settings
+    - name: source
+      workspace: source
+  - name: buildah
+    params:
+    - name: IMAGE
+      value: $(params.IMAGE_NAME):$(params.IMAGE_TAG)
+    - name: BUILDER_IMAGE
+      value: registry.redhat.io/rhel8/buildah@sha256:0a86ecbdfbe86e9d225b7fe4b090a0dd6d323f8afdfdf2bd933ff223ddb53320
+    - name: STORAGE_DRIVER
+      value: vfs
+    - name: DOCKERFILE
+      value: ./Dockerfile.multi
+    - name: CONTEXT
+      value: .
+    - name: TLSVERIFY
+      value: "true"
+    - name: FORMAT
+      value: oci
+    - name: SKIP_PUSH
+      value: "false"
+    runAfter:
+    - maven
+    taskRef:
+      kind: ClusterTask
+      name: buildah
+    workspaces:
+    - name: source
+      workspace: source
+  - name: git-update-deployment
+    params:
+    - name: GIT_REPOSITORY
+      value: $(params.MANIFESTS_GIT_REPO)
+    - name: GIT_REF
+      value: $(params.MANIFESTS_GIT_BRANCH)
+    - name: NEW_IMAGE
+      value: quay.io/bluesman/gateway-vertx
+    - name: NEW_DIGEST
+      value: $(tasks.buildah.results.IMAGE_DIGEST)
+    - name: KUSTOMIZATION_PATH
+      value: k8s
+    runAfter:
+    - buildah
+    taskRef:
+      kind: Task
+      name: git-update-deployment
+    workspaces:
+    - name: workspace
+      workspace: source
+  workspaces:
+  - name: source
+  - name: maven-settings

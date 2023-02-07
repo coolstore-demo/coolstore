@@ -1,0 +1,5 @@
+namespace: coolstore-prod
+
+resources:
+- namespace.yaml
+- ../../base

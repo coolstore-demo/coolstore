@@ -1,0 +1,15 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  labels:
+    app.kubernetes.io/managed-by: EventListener
+    app.kubernetes.io/part-of: Triggers
+    eventlistener: catalog
+  name: el-catalog
+spec:
+  port:
+    targetPort: http-listener
+  to:
+    kind: Service
+    name: el-catalog
+    weight: 100

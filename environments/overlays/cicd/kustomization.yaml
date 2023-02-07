@@ -1,0 +1,4 @@
+namespace: coolstore-cicd
+
+resources:
+- namespace.yaml
