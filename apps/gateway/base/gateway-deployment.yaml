@@ -3,8 +3,7 @@ apiVersion: apps/v1
 metadata:
   name: gateway-vertx
   annotations:
-    app.openshift.io/connects-to: catalog-spring-boot
-    app.openshift.io/connects-to: inventory-quarkus
+    app.openshift.io/connects-to: ["catalog-spring-boot","inventory-quarkus"]
   labels:
     app: gateway-vertx
     app.kubernetes.io/component: gateway-vertx
