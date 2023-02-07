@@ -1,4 +1,4 @@
 resources:
-- deployment.yaml
-- service.yaml
-- route.yaml
+- web-deployment.yaml
+- web-service.yaml
+- web-route.yaml
