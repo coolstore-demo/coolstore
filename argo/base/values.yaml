@@ -13,7 +13,7 @@ default:
 
 projects:
 
-  product-catalog:
+  coolstore:
     description: Project for coolstore demo
     namespace: openshift-gitops
     sourceRepos:
