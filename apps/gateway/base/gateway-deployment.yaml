@@ -1,0 +1,59 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: gateway-vertx
+  annotations:
+    app.openshift.io/connects-to: catalog-spring-boot
+    app.openshift.io/connects-to: inventory-quarkus
+  labels:
+    app: gateway-vertx
+    app.kubernetes.io/component: gateway-vertx
+    app.kubernetes.io/instance: gateway-vertx
+    app.kubernetes.io/name: vertx
+    app.kubernetes.io/part-of: coolstore
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gateway-vertx
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: gateway-vertx
+    spec:
+      containers:
+        - name: gateway-vertx
+          image: quay.io/bluesman/gateway-vertx:latest
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+            - containerPort: 8443
+              protocol: TCP
+            - containerPort: 8778
+              protocol: TCP
+          env:
+            - name: COMPONENT_CATALOG_HOST
+              value: catalog-spring-boot
+            - name: COMPONENT_CATALOG_PORT
+              value: '8080'
+            - name: COMPONENT_INVENTORY_HOST
+              value: inventory-quarkus
+            - name: COMPONENT_INVENTORY_PORT
+              value: '8080'
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: Always
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      schedulerName: default-scheduler
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+  revisionHistoryLimit: 10
+  progressDeadlineSeconds: 600

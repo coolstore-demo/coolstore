@@ -1,0 +1,28 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: web-nodejs
+  labels:
+    app: web-nodejs
+    app.kubernetes.io/component: web-nodejs
+    app.kubernetes.io/instance: web-nodejs
+    app.kubernetes.io/name: web-nodejs
+    app.kubernetes.io/part-of: coolstore
+    app.openshift.io/runtime: nodejs
+    app.openshift.io/runtime-version: 16-ubi8
+  annotations:
+    app.openshift.io/vcs-ref: ''
+    app.openshift.io/vcs-uri: 'https://github.com/modernizing-java-applications-book/web-nodejs.git'
+    openshift.io/generated-by: OpenShiftWebConsole
+spec:
+  ports:
+    - name: 8080-tcp
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+  internalTrafficPolicy: Cluster
+  sessionAffinity: None
+  selector:
+    app: web-nodejs
+    deployment: web-nodejs
+

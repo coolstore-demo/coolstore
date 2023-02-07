@@ -1,0 +1,51 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  annotations:
+    alpha.image.policy.openshift.io/resolve-names: '*'
+    app.openshift.io/route-disabled: 'false'
+  name: catalog-spring-boot
+  labels:
+    app: catalog-spring-boot
+    app.kubernetes.io/component: catalog-spring-boot
+    app.kubernetes.io/instance: catalog-spring-boot
+    app.kubernetes.io/name: catalog-spring-boot
+    app.kubernetes.io/part-of: coolstore
+    app.openshift.io/runtime: spring-boot
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: catalog-spring-boot
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: catalog-spring-boot
+        deployment: catalog-spring-boot
+    spec:
+      containers:
+        - name: catalog-spring-boot
+          image: quay.io/bluesman/catalog-spring-boot:latest
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+            - containerPort: 8443
+              protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: Always
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      schedulerName: default-scheduler
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+  revisionHistoryLimit: 10
+  progressDeadlineSeconds: 600
+

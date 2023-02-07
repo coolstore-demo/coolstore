@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: inventory-quarkus
+  labels:
+    app: inventory-quarkus
+    app.kubernetes.io/component: inventory-quarkus
+    app.kubernetes.io/instance: inventory-quarkus
+    app.kubernetes.io/name: inventory-quarkus
+    app.kubernetes.io/part-of: coolstore
+    app.openshift.io/runtime: quarkus
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: inventory-quarkus
+  template:
+    metadata:
+      labels:
+        app: inventory-quarkus
+    spec:
+      containers:
+      - name: inventory-quarkus
+        image: quay.io/bluesman/inventory-quarkus:latest
+        ports:
+        - containerPort: 8080
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8080
+            scheme: HTTP
+          periodSeconds: 10
+          successThreshold: 1
+          failureThreshold: 3
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8080
+            scheme: HTTP
+          periodSeconds: 10
+          successThreshold: 1
+          failureThreshold: 3
