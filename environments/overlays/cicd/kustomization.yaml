@@ -4,5 +4,6 @@ resources:
 - namespace.yaml
 - ../../../tekton/tasks/base
 - ../../../tekton/pipelines/common/base
+- ../../../tekton/pipelines/catalog/base
 - ../../../tekton/pipelines/gateway/base
 - ../../../tekton/pipelines/inventory/base
