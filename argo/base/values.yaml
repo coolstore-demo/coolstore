@@ -23,7 +23,7 @@ projects:
         server: https://kubernetes.default.svc
       - namespace: 'coolstore-dev'
         server: https://kubernetes.default.svc
-      - namespace: 'coolstore-test'
+      - namespace: 'coolstore-stage'
         server: https://kubernetes.default.svc
       - namespace: 'coolstore-prod'
         server: https://kubernetes.default.svc
