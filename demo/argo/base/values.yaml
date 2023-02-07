@@ -38,22 +38,22 @@ applications:
     destination:
       namespace: coolstore-cicd
     source:
-      path: environments/overlays/cicd
+      path: demo/environments/overlays/cicd
 
   coolstore-dev:
     destination:
       namespace: coolstore-dev
     source:
-      path: environments/overlays/dev
+      path: demo/environments/overlays/dev
 
   coolstore-stage:
     destination:
       namespace: coolstore-stage
     source:
-      path: environments/overlays/stage
+      path: demo/environments/overlays/stage
 
   coolstore-prod:
     destination:
       namespace: coolstore-prod
     source:
-      path: environments/overlays/prod
+      path: demo/environments/overlays/prod

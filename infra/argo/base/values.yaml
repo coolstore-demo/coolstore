@@ -1,0 +1,41 @@
+default:
+  app:
+    enabled: true
+    enableAutoSync: true
+    autoSyncPrune: false
+    project: config
+    destination:
+      namespace: openshift-gitops
+      server: https://kubernetes.default.svc
+    source:
+      repoURL: https://github.com/gitops-examples/coolstore.git
+      targetRevision: HEAD
+
+projects:
+
+  config:
+    description: Cluster Configuration
+    namespace: openshift-gitops
+    sourceRepos:
+    - https://github.com/gitops-examples/coolstore.git
+    destinations: |
+      - namespace: '*'
+        server: https://kubernetes.default.svc
+    extraFields: |
+      clusterResourceWhitelist:
+      - group: '*'
+        kind: '*'
+
+applications:
+
+  gitops:
+    destination:
+      namespace: openshift-gitops
+    source:
+      path: demo/infra/components/gitops-operator/base
+
+  pipelines:
+    destination:
+      namespace: openshift-gitops
+    source:
+      path: demo/infra/components/pipelines-operator/base
