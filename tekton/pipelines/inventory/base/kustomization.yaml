@@ -1,0 +1,6 @@
+resources:
+- inventory-pvc.yaml
+- inventory-pipeline.yaml
+- inventory-triggertemplate.yaml
+- inventory-eventlistener.yaml
+- inventory-el-route.yaml

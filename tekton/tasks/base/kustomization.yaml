@@ -1,0 +1,2 @@
+resources:
+- git-update-deployment.yaml

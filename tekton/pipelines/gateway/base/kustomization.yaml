@@ -1,0 +1,6 @@
+resources:
+- gateway-pvc.yaml
+- gateway-pipeline.yaml
+- gateway-triggertemplate.yaml
+- gateway-eventlistener.yaml
+- gateway-el-route.yaml

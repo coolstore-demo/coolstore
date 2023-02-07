@@ -1,0 +1,6 @@
+resources:
+- catalog-pvc.yaml
+- catalog-pipeline.yaml
+- catalog-triggertemplate.yaml
+- catalog-eventlistener.yaml
+- catalog-el-route.yaml

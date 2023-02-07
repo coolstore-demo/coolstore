@@ -2,3 +2,7 @@ namespace: coolstore-cicd
 
 resources:
 - namespace.yaml
+- ../../../tekton/tasks/base
+- ../../../tekton/pipelines/common/base
+- ../../../tekton/pipelines/gateway/base
+- ../../../tekton/pipelines/inventory/base
