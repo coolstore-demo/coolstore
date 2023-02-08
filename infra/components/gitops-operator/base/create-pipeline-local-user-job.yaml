@@ -17,10 +17,10 @@ spec:
             export HOME=/home/argocd
 
             echo "Getting argocd admin credential..."
-            if kubectl get secret argocd-cluster >/dev/null;
+            if kubectl get secret $ARGO_SECRET_NAME >/dev/null;
             then
               # Retrieve password
-              PASSWORD=$(oc get secret argocd-cluster -o jsonpath="{.data.admin\.password}" | base64 -d)
+              PASSWORD=$(oc get secret $ARGO_SECRET_NAME -o jsonpath="{.data.admin\.password}" | base64 -d)
             else
               echo "Could not retrieve admin password"
               exit 1
@@ -59,6 +59,8 @@ spec:
           value: "coolstore-pipeline=coolstore-cicd"
         - name: ARGO_SERVER_HOST
           value: "openshift-gitops-server-openshift-gitops.apps.rhte.0x74.p1.openshiftapps.com"
+        - name: ARGO_SECRET_NAME
+          value: "openshift-gitops-cluster"
         imagePullPolicy: Always
         name: create-pipeline-local-user
       serviceAccount: openshift-gitops-argocd-application-controller
