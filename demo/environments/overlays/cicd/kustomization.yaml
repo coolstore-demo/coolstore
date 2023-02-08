@@ -1,5 +1,13 @@
 namespace: coolstore-cicd
 
+generatorOptions:
+ disableNameSuffixHash: true
+
+configMapGenerator:
+- name: maven-settings
+  files:
+  - secrets/settings.xml
+
 resources:
 - ../../../tekton/tasks/base
 - ../../../tekton/pipelines/common/base
