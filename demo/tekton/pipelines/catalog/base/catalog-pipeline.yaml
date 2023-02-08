@@ -103,7 +103,7 @@ spec:
     - name: GIT_REF
       value: $(params.MANIFESTS_GIT_BRANCH)
     - name: NEW_IMAGE
-      value: quay.io/bluesman/catalog-spring-boot
+      value: quay.io/coolstore-demo/catalog-spring-boot
     - name: NEW_DIGEST
       value: $(tasks.buildah.results.IMAGE_DIGEST)
     - name: KUSTOMIZATION_PATH
