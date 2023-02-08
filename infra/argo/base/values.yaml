@@ -41,6 +41,12 @@ applications:
     source:
       path: infra/components/acs-tokens/base
 
+  dev-tools:
+    annotations:
+      argocd.argoproj.io/compare-options: IgnoreExtraneous
+    source:
+      path: infra/components/dev-tools/overlays/default
+
   namespaces:
     destination:
       namespace: openshift-gitops
