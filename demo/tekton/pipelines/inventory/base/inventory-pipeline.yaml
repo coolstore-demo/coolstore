@@ -7,7 +7,7 @@ spec:
   - default: 1.0.0
     name: IMAGE_TAG
     type: string
-  - default: quay.io/bluesman/inventory-quarkus
+  - default: quay.io/coolstore-demo/inventory-quarkus
     name: IMAGE_NAME
     type: string
   - default: https://github.com/modernizing-java-applications-book/inventory-quarkus.git
@@ -103,7 +103,7 @@ spec:
     - name: GIT_REF
       value: $(params.MANIFESTS_GIT_BRANCH)
     - name: NEW_IMAGE
-      value: quay.io/bluesman/inventory-quarkus
+      value: quay.io/coolstore-demo/inventory-quarkus
     - name: NEW_DIGEST
       value: $(tasks.buildah.results.IMAGE_DIGEST)
     - name: KUSTOMIZATION_PATH
