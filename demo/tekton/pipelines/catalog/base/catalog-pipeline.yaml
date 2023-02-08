@@ -162,7 +162,7 @@ spec:
       - name: output_format
         value: table
       - name: image
-        value: $(params.image_dest_url)@$(tasks.build-image.results.IMAGE_DIGEST)
+        value: $(params.IMAGE_NAME)@$(tasks.buildah.results.IMAGE_DIGEST)
     when:
       - input: "$(workspaces.acs-central.bound)"
         operator: in
@@ -178,7 +178,7 @@ spec:
       - acs-scan-image
     params:
       - name: image
-        value: $(params.image_dest_url)@$(tasks.build-image.results.IMAGE_DIGEST)
+        value: $(params.IMAGE_NAME)@$(tasks.buildah.results.IMAGE_DIGEST)
     when:
       - input: "$(workspaces.acs-central.bound)"
         operator: in
