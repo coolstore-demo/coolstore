@@ -71,6 +71,22 @@ spec:
       workspace: maven-settings
     - name: source
       workspace: source
+  - name: code-analysis
+    params:
+      - name: GOALS
+        value:
+          - "sonar:sonar"
+          - "-Pquality"
+    runAfter:
+      - maven
+    taskRef:
+      name: maven
+      kind: ClusterTask
+    workspaces:
+    - name: maven-settings
+      workspace: maven-settings
+    - name: source
+      workspace: source
   - name: buildah
     params:
     - name: IMAGE
@@ -90,7 +106,7 @@ spec:
     - name: SKIP_PUSH
       value: "false"
     runAfter:
-    - maven
+    - code-analysis
     taskRef:
       kind: ClusterTask
       name: buildah
