@@ -96,7 +96,7 @@ spec:
     workspaces:
     - name: source
       workspace: source
-  - name: git-update-deployment
+  - name: dev-git-update
     params:
     - name: GIT_REPOSITORY
       value: $(params.MANIFESTS_GIT_REPO)
