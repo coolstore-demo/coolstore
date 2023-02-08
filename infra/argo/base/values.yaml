@@ -28,6 +28,19 @@ projects:
 
 applications:
 
+  acs:
+    annotations:
+      argocd.argoproj.io/compare-options: IgnoreExtraneous
+    source:
+      path: infra/components/acs-operator/overlays/oauth
+
+  # Generates ACS tokens for Pipelines to consume
+  acs:
+    annotations:
+      argocd.argoproj.io/compare-options: IgnoreExtraneous
+    source:
+      path: infra/components/acs-tokens/base
+
   namespaces:
     destination:
       namespace: openshift-gitops
