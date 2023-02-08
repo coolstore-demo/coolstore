@@ -2,3 +2,8 @@ namespace: coolstore-dev
 
 resources:
 - ../../base
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+images:
+- digest: sha256:20e3575242660b5c3c2f12b20608456eb28ca6991eba96a47026fbe3b9ab5c2a
+  name: quay.io/coolstore-demo/catalog-spring-boot
