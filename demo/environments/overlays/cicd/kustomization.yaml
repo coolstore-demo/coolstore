@@ -3,7 +3,7 @@ namespace: coolstore-cicd
 generatorOptions:
  disableNameSuffixHash: true
 
-configMapGenerator:
+secretGenerator:
 - name: maven-settings
   files:
   - secrets/settings.xml
