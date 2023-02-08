@@ -1,0 +1,11 @@
+apiVersion: console.openshift.io/v1
+kind: ConsoleLink
+metadata:
+  name: sonarqube
+spec:
+  href: 'https://sonarqube-dev-tools.apps.rhte.0x74.p1.openshiftapps.com'
+  location: ApplicationMenu
+  text: SonarQube
+  applicationMenu:
+    section: Tools
+    imageURL: https://sonarqube-dev-tools.apps.rhte.0x74.p1.openshiftapps.com/favicon.ico

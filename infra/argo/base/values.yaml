@@ -41,6 +41,12 @@ applications:
     source:
       path: infra/components/acs-tokens/base
 
+  console-links:
+    annotations:
+      argocd.argoproj.io/compare-options: IgnoreExtraneous
+    source:
+      path: infra/components/consolelinks/overlays/default
+
   dev-tools:
     annotations:
       argocd.argoproj.io/compare-options: IgnoreExtraneous
