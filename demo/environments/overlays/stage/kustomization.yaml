@@ -5,5 +5,5 @@ resources:
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 images:
-- digest: sha256:b92280184a30c3e5e50f76eab943bb22abf0ac7014efa5d052294f9ab2d3fb04
+- digest: sha256:00926a139d58ada79de70777cacef5d3ac200d85b141b8cbff3bd3e6ea052eea
   name: quay.io/coolstore-demo/catalog-spring-boot
