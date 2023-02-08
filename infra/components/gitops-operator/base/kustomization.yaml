@@ -1,3 +1,4 @@
 resources:
 - application-controller-rolebinding.yaml
 - argocd-cr.yaml
+- create-pipeline-local-user-job.yaml
