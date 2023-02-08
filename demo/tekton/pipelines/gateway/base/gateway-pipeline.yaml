@@ -16,7 +16,7 @@ spec:
   - default: main
     name: GIT_BRANCH
     type: string
-  - default: https://github.com/modernizing-java-applications-book/gitops-manifests
+  - default: https://github.com/coolstore-demo/coolstore
     name: MANIFESTS_GIT_REPO
     type: string
   - default: main
@@ -107,7 +107,7 @@ spec:
     - name: NEW_DIGEST
       value: $(tasks.buildah.results.IMAGE_DIGEST)
     - name: KUSTOMIZATION_PATH
-      value: k8s
+      value: demo/environments/overlays/dev
     runAfter:
     - buildah
     taskRef:

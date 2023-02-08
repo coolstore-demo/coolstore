@@ -7,7 +7,7 @@ spec:
   - default: 1.0.0
     name: IMAGE_TAG
     type: string
-  - default: quay.io/bluesman/catalog-spring-boot
+  - default: quay.io/coolstore-demo/catalog-spring-boot
     name: IMAGE_NAME
     type: string
   - default: https://github.com/modernizing-java-applications-book/catalog-spring-boot.git
@@ -16,7 +16,7 @@ spec:
   - default: main
     name: GIT_BRANCH
     type: string
-  - default: https://github.com/modernizing-java-applications-book/gitops-manifests
+  - default: https://github.com/coolstore-demo/coolstore
     name: MANIFESTS_GIT_REPO
     type: string
   - default: main
@@ -107,7 +107,7 @@ spec:
     - name: NEW_DIGEST
       value: $(tasks.buildah.results.IMAGE_DIGEST)
     - name: KUSTOMIZATION_PATH
-      value: k8s
+      value: demo/environments/overlays/dev
     runAfter:
     - buildah
     taskRef:
