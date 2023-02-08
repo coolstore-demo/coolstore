@@ -61,8 +61,8 @@ spec:
           value: "openshift-gitops-server-openshift-gitops.apps.rhte.0x74.p1.openshiftapps.com"
         imagePullPolicy: Always
         name: create-pipeline-local-user
-      serviceAccount: argocd-argocd-application-controller
-      serviceAccountName: argocd-argocd-application-controller
+      serviceAccount: openshift-gitops-argocd-application-controller
+      serviceAccountName: openshift-gitops-argocd-application-controller
       dnsPolicy: ClusterFirst
       restartPolicy: OnFailure
       terminationGracePeriodSeconds: 30
