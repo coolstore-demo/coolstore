@@ -1,3 +1,5 @@
+namespace: openshift-gitops
+
 resources:
 - application-controller-rolebinding.yaml
 - argocd-cr.yaml
