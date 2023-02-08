@@ -17,7 +17,7 @@ projects:
     description: Cluster Configuration
     namespace: openshift-gitops
     sourceRepos:
-    - https://github.com/gitops-examples/coolstore.git
+    - https://github.com/coolstore-demo/coolstore.git
     destinations: |
       - namespace: '*'
         server: https://kubernetes.default.svc

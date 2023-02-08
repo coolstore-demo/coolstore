@@ -17,7 +17,7 @@ projects:
     description: Project for coolstore demo
     namespace: openshift-gitops
     sourceRepos:
-    - https://github.com/gitops-examples/coolstore.git
+    - https://github.com/coolstore-demo/coolstore.git
     destinations: |
       - namespace: 'coolstore-cicd'
         server: https://kubernetes.default.svc
