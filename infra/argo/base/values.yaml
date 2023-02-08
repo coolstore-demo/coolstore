@@ -32,10 +32,10 @@ applications:
     destination:
       namespace: openshift-gitops
     source:
-      path: demo/infra/components/gitops-operator/base
+      path: infra/components/gitops-operator/base
 
   pipelines:
     destination:
       namespace: openshift-gitops
     source:
-      path: demo/infra/components/pipelines-operator/base
+      path: infra/components/pipelines-operator/base
