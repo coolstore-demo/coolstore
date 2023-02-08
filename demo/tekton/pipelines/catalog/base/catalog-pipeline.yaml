@@ -116,6 +116,42 @@ spec:
     workspaces:
     - name: workspace
       workspace: source
+  - name: dev-gitops-sync
+    taskRef:
+      name: argocd-task-sync-and-wait
+    runAfter:
+      - dev-git-update
+    params:
+      - name: application_name
+        value: coolstore-dev
+  - name: stage-git-update
+    params:
+    - name: GIT_REPOSITORY
+      value: $(params.MANIFESTS_GIT_REPO)
+    - name: GIT_REF
+      value: $(params.MANIFESTS_GIT_BRANCH)
+    - name: NEW_IMAGE
+      value: quay.io/coolstore-demo/catalog-spring-boot
+    - name: NEW_DIGEST
+      value: $(tasks.buildah.results.IMAGE_DIGEST)
+    - name: KUSTOMIZATION_PATH
+      value: demo/environments/overlays/stage
+    runAfter:
+    - dev-gitops-sync
+    taskRef:
+      kind: Task
+      name: git-update-deployment
+    workspaces:
+    - name: workspace
+      workspace: source
+  - name: stage-gitops-sync
+    taskRef:
+      name: argocd-task-sync-and-wait
+    runAfter:
+      - stage-git-update
+    params:
+      - name: application_name
+        value: coolstore-stage
   workspaces:
   - name: source
   - name: maven-settings
