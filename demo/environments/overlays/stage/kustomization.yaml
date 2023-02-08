@@ -1,5 +1,4 @@
 namespace: coolstore-stage
 
 resources:
-- namespace.yaml
 - ../../base

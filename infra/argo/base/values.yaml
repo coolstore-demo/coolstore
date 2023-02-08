@@ -28,6 +28,12 @@ projects:
 
 applications:
 
+  namespaces:
+    destination:
+      namespace: openshift-gitops
+    source:
+      path: infra/components/namespaces/base
+
   gitops:
     destination:
       namespace: openshift-gitops

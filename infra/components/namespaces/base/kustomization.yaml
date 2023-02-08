@@ -1,0 +1,5 @@
+resources:
+- cicd-namespace.yaml
+- dev-namespace.yaml
+- prod-namespace.yaml
+- stage-namespace.yaml
