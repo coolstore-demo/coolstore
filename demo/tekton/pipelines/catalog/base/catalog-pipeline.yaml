@@ -152,6 +152,42 @@ spec:
     params:
       - name: application_name
         value: coolstore-stage
+  - name: acs-scan-image
+    taskRef:
+      name: rox-image-scan
+      kind: ClusterTask
+    runAfter:
+      - buildah
+    params:
+      - name: output_format
+        value: table
+      - name: image
+        value: $(params.image_dest_url)@$(tasks.build-image.results.IMAGE_DIGEST)
+    when:
+      - input: "$(workspaces.acs-central.bound)"
+        operator: in
+        values: ["true"]
+    workspaces:
+      - name: acs-central
+        workspace: acs-central
+  - name: acs-check-image
+    taskRef:
+      name: rox-image-check
+      kind: ClusterTask
+    runAfter:
+      - acs-scan-image
+    params:
+      - name: image
+        value: $(params.image_dest_url)@$(tasks.build-image.results.IMAGE_DIGEST)
+    when:
+      - input: "$(workspaces.acs-central.bound)"
+        operator: in
+        values: ["true"]
+    workspaces:
+      - name: acs-central
+        workspace: acs-central
   workspaces:
   - name: source
   - name: maven-settings
+  - name: acs-central
+    optional: true
