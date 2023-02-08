@@ -12,6 +12,8 @@ kustomize build infra/argo/base --enable-helm | oc apply -f -
 
 * Note this will update the openshift-gitops operator configuration and it will become self-managing
 
+Wait for all applications to be in sync before moving to the next step
+
 3. Install the demo application with:
 
 ```
