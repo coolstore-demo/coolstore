@@ -36,7 +36,8 @@ spec:
                 if [ -z "$HAS_SECRET" ];
                 then
                   echo "No argo-env-secret present, creating"
-                  argocd login --plaintext --username admin --password ${PASSWORD} $ARGO_INSTANCE_NAME-server
+                  echo "Using service ${ARGO_INSTANCE_NAME}-server"
+                  argocd login --plaintext --username admin --password ${PASSWORD} "${ARGO_INSTANCE_NAME}-server"
                   echo "Generating token for ${account}"
                   TOKEN=$(argocd account generate-token --account ${account})
                   if [ "$TOKEN" ];
