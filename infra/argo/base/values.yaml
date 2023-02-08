@@ -35,7 +35,7 @@ applications:
       path: infra/components/acs-operator/overlays/oauth
 
   # Generates ACS tokens for Pipelines to consume
-  acs:
+  acs-tokens:
     annotations:
       argocd.argoproj.io/compare-options: IgnoreExtraneous
     source:
