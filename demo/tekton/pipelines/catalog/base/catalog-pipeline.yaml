@@ -10,7 +10,7 @@ spec:
   - default: quay.io/coolstore-demo/catalog-spring-boot
     name: IMAGE_NAME
     type: string
-  - default: https://github.com/modernizing-java-applications-book/catalog-spring-boot.git
+  - default: https://github.com/coolstore-demo/catalog-spring-boot.git
     name: GIT_REPO
     type: string
   - default: main
