@@ -31,7 +31,6 @@ spec:
       requests:
         cpu: "1"
         memory: 3Gi
-  disableAdmin: true
   extraConfig:
     accounts.coolstore-pipeline: apiKey
   grafana:
