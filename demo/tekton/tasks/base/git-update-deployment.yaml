@@ -37,6 +37,7 @@ spec:
       rm -rf git-update-digest-workdir
       git clone $(params.GIT_REPOSITORY) -b $(params.GIT_REF) git-update-digest-workdir
       if [ "$(params.CREATE_BRANCH_NAME)" = "skip" ]
+      then
         echo "Skip branching"
       else
         git checkout -b $(params.CREATE_BRANCH_NAME)
