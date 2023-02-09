@@ -30,4 +30,8 @@ spec:
           persistentVolumeClaim:
             claimName: inventory-pvc
         - name: maven-settings
-          emptyDir: {}
+          secret:
+            name: maven-settings
+        - name: acs-central
+          secret:
+            name: acd-central
