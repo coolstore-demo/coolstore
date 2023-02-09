@@ -13,3 +13,5 @@ spec:
     kind: Service
     name: el-inventory
     weight: 100
+  tls:
+    termination: edge
