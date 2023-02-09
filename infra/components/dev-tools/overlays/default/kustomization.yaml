@@ -15,13 +15,13 @@ resources:
 - namespace.yaml
 
 patches:
-# - patch: |-
-#     - op: replace
-#       path: /spec/template/spec/containers/0/image
-#       value: sonarqube:7.9.6-community
-#   target:
-#     kind: Deployment
-#     name: sonarqube
+- patch: |-
+    - op: replace
+      path: /spec/template/spec/containers/0/image
+      value: sonarqube:lts-community
+  target:
+    kind: Deployment
+    name: sonarqube
 - patch: |-
     - op: add
       path: /spec/tls
