@@ -35,6 +35,7 @@ spec:
     resources: {}
     script: |
       rm -rf git-update-digest-workdir
+      echo "Cloning $(params.GIT_REPOSITORY):$(params.GIT_REF)"
       git clone $(params.GIT_REPOSITORY) -b $(params.GIT_REF) git-update-digest-workdir
       if [ "$(params.CREATE_BRANCH_NAME)" = "skip" ]
       then
