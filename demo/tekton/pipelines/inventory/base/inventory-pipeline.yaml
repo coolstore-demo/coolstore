@@ -106,7 +106,7 @@ spec:
     - name: SKIP_PUSH
       value: "false"
     runAfter:
-    - maven
+    - code-analysis
     taskRef:
       kind: ClusterTask
       name: buildah
