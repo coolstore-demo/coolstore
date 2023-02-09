@@ -10,7 +10,7 @@ spec:
   - default: quay.io/coolstore-demo/inventory-quarkus
     name: IMAGE_NAME
     type: string
-  - default: https://github.com/modernizing-java-applications-book/inventory-quarkus.git
+  - default: https://github.com/coolstore-demo/inventory-quarkus.git
     name: GIT_REPO
     type: string
   - default: main
@@ -56,6 +56,7 @@ spec:
     - name: GOALS
       value:
       - package
+      - deploy
     - name: PROXY_PROTOCOL
       value: http
     - name: CONTEXT_DIR
@@ -70,6 +71,22 @@ spec:
       workspace: maven-settings
     - name: source
       workspace: source
+  - name: code-analysis
+    params:
+      - name: GOALS
+        value:
+          - "sonar:sonar"
+          - "-Pquality"
+    runAfter:
+      - maven
+    taskRef:
+      name: maven
+      kind: ClusterTask
+    workspaces:
+    - name: maven-settings
+      workspace: maven-settings
+    - name: source
+      workspace: source
   - name: buildah
     params:
     - name: IMAGE
@@ -79,7 +96,7 @@ spec:
     - name: STORAGE_DRIVER
       value: vfs
     - name: DOCKERFILE
-      value: ./Dockerfile.multi
+      value: ./Dockerfile
     - name: CONTEXT
       value: .
     - name: TLSVERIFY
@@ -96,7 +113,7 @@ spec:
     workspaces:
     - name: source
       workspace: source
-  - name: git-update-deployment
+  - name: dev-git-update
     params:
     - name: GIT_REPOSITORY
       value: $(params.MANIFESTS_GIT_REPO)
@@ -116,6 +133,78 @@ spec:
     workspaces:
     - name: workspace
       workspace: source
+  - name: dev-gitops-sync
+    taskRef:
+      name: argocd-task-sync-and-wait
+    runAfter:
+      - dev-git-update
+    params:
+      - name: application_name
+        value: coolstore-dev
+  - name: stage-git-update
+    params:
+    - name: GIT_REPOSITORY
+      value: $(params.MANIFESTS_GIT_REPO)
+    - name: GIT_REF
+      value: $(params.MANIFESTS_GIT_BRANCH)
+    - name: NEW_IMAGE
+      value: quay.io/coolstore-demo/inventory-quarkus
+    - name: NEW_DIGEST
+      value: $(tasks.buildah.results.IMAGE_DIGEST)
+    - name: KUSTOMIZATION_PATH
+      value: demo/environments/overlays/stage
+    runAfter:
+    - dev-gitops-sync
+    taskRef:
+      kind: Task
+      name: git-update-deployment
+    workspaces:
+    - name: workspace
+      workspace: source
+  - name: stage-gitops-sync
+    taskRef:
+      name: argocd-task-sync-and-wait
+    runAfter:
+      - stage-git-update
+    params:
+      - name: application_name
+        value: coolstore-stage
+  - name: acs-scan-image
+    taskRef:
+      name: rox-image-scan
+      kind: Task
+    runAfter:
+      - buildah
+    params:
+      - name: output_format
+        value: table
+      - name: image
+        value: $(params.IMAGE_NAME)@$(tasks.buildah.results.IMAGE_DIGEST)
+    when:
+      - input: "$(workspaces.acs-central.bound)"
+        operator: in
+        values: ["true"]
+    workspaces:
+      - name: acs-central
+        workspace: acs-central
+  - name: acs-check-image
+    taskRef:
+      name: rox-image-check
+      kind: Task
+    runAfter:
+      - acs-scan-image
+    params:
+      - name: image
+        value: $(params.IMAGE_NAME)@$(tasks.buildah.results.IMAGE_DIGEST)
+    when:
+      - input: "$(workspaces.acs-central.bound)"
+        operator: in
+        values: ["true"]
+    workspaces:
+      - name: acs-central
+        workspace: acs-central
   workspaces:
   - name: source
   - name: maven-settings
+  - name: acs-central
+    optional: true
