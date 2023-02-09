@@ -3,3 +3,6 @@ resources:
 - argocd-sync-and-wait-task.yaml
 - rox-image-check-task.yaml
 - rox-image-scan-task.yaml
+- task-create-pr.yaml
+- task-image-tag-to-digest.yaml
+- task-variables.yaml

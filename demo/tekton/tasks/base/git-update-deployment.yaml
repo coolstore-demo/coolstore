@@ -22,6 +22,9 @@ spec:
     type: string
   - name: KUSTOMIZATION_PATH
     type: string
+  - name: CREATE_BRANCH_NAME
+    type: string
+    default: "skip"
   results:
   - description: The commit SHA
     name: commit
@@ -33,7 +36,11 @@ spec:
     script: |
       rm -rf git-update-digest-workdir
       git clone $(params.GIT_REPOSITORY) -b $(params.GIT_REF) git-update-digest-workdir
-    workingDir: $(workspaces.workspace.path)
+      if [ "$(params.CREATE_BRANCH_NAME)" = "skip" ]
+        echo "Skip branching"
+      else
+        git checkout -b $(params.CREATE_BRANCH_NAME)
+      fi
   - image: quay.io/wpernath/kustomize-ubi:latest
     name: update-digest
     resources: {}
