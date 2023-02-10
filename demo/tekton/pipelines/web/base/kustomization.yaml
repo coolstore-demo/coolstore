@@ -1,0 +1,6 @@
+resources:
+- web-pvc.yaml
+- web-pipeline.yaml
+- web-triggertemplate.yaml
+- web-eventlistener.yaml
+- web-el-route.yaml

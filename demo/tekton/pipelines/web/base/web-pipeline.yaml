@@ -1,0 +1,287 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: web-pipeline
+spec:
+  workspaces:
+  - name: source
+  - name: maven-settings
+  - name: acs-central
+    optional: true
+  - name: slack-secret
+    optional: true
+  params:
+  - default: 1.0.0
+    name: IMAGE_TAG
+    type: string
+  - default: quay.io/coolstore-demo/web-nodejs
+    name: IMAGE_NAME
+    type: string
+  - default: https://github.com/coolstore-demo/web-nodejs.git
+    name: GIT_REPO
+    type: string
+  - default: main
+    name: GIT_BRANCH
+    type: string
+  - default: https://github.com/coolstore-demo/coolstore
+    name: MANIFESTS_GIT_REPO
+    type: string
+  - default: main
+    name: MANIFESTS_GIT_BRANCH
+    type: string
+  - name: SONARQUBE_HOST
+    type: string
+    description: Hostname for sonarqube
+    default: sonarqube-dev-tools.apps.rhte.0x74.p1.openshiftapps.com
+  tasks:
+  - name: variables
+    taskRef:
+      name: variables-from-k8s
+    workspaces:
+      - name: acs-central
+        workspace: acs-central
+  - name: git-clone
+    params:
+    - name: url
+      value: $(params.GIT_REPO)
+    - name: revision
+      value: $(params.GIT_BRANCH)
+    - name: submodules
+      value: "true"
+    - name: depth
+      value: "1"
+    - name: sslVerify
+      value: "true"
+    - name: crtFileName
+      value: ca-bundle.crt
+    - name: deleteExisting
+      value: "true"
+    - name: verbose
+      value: "true"
+    - name: gitInitImage
+      value: registry.redhat.io/openshift-pipelines/pipelines-git-init-rhel8@sha256:cadf614a6044ee37397de3abe7674827ecab225e7fac9fb123eff5473e2c4003
+    - name: userHome
+      value: /tekton/home
+    taskRef:
+      kind: ClusterTask
+      name: git-clone
+    runAfter:
+      - variables
+    workspaces:
+    - name: output
+      workspace: source
+  - name: npm
+    taskRef:
+      name: npm
+      kind: Task
+    runAfter:
+      - git-clone
+    workspaces:
+      - name: source
+        workspace: source
+  - name: code-analysis
+    taskRef:
+      name: npm-quality
+      kind: Task
+    runAfter:
+      - npm
+    workspaces:
+      - name: source
+        workspace: source
+  - name: buildah
+    params:
+    - name: IMAGE
+      value: $(params.IMAGE_NAME):$(params.IMAGE_TAG)
+    - name: BUILDER_IMAGE
+      value: registry.redhat.io/rhel8/buildah@sha256:0a86ecbdfbe86e9d225b7fe4b090a0dd6d323f8afdfdf2bd933ff223ddb53320
+    - name: STORAGE_DRIVER
+      value: vfs
+    - name: DOCKERFILE
+      value: ./Dockerfile
+    - name: CONTEXT
+      value: .
+    - name: TLSVERIFY
+      value: "true"
+    - name: FORMAT
+      value: oci
+    - name: SKIP_PUSH
+      value: "false"
+    runAfter:
+    - code-analysis
+    taskRef:
+      kind: ClusterTask
+      name: buildah
+    workspaces:
+    - name: source
+      workspace: source
+  - name: dev-git-update
+    params:
+    - name: GIT_REPOSITORY
+      value: $(params.MANIFESTS_GIT_REPO)
+    - name: GIT_REF
+      value: $(params.MANIFESTS_GIT_BRANCH)
+    - name: NEW_IMAGE
+      value: quay.io/coolstore-demo/web-nodejs
+    - name: NEW_DIGEST
+      value: $(tasks.buildah.results.IMAGE_DIGEST)
+    - name: KUSTOMIZATION_PATH
+      value: demo/environments/overlays/dev
+    runAfter:
+    - buildah
+    taskRef:
+      kind: Task
+      name: git-update-deployment
+    workspaces:
+    - name: workspace
+      workspace: source
+  - name: dev-gitops-sync
+    taskRef:
+      name: argocd-task-sync-and-wait
+    runAfter:
+      - dev-git-update
+    params:
+      - name: application_name
+        value: coolstore-dev
+  - name: stage-git-update
+    params:
+    - name: GIT_REPOSITORY
+      value: $(params.MANIFESTS_GIT_REPO)
+    - name: GIT_REF
+      value: $(params.MANIFESTS_GIT_BRANCH)
+    - name: NEW_IMAGE
+      value: quay.io/coolstore-demo/web-nodejs
+    - name: NEW_DIGEST
+      value: $(tasks.buildah.results.IMAGE_DIGEST)
+    - name: KUSTOMIZATION_PATH
+      value: demo/environments/overlays/stage
+    runAfter:
+    - dev-gitops-sync
+    taskRef:
+      kind: Task
+      name: git-update-deployment
+    workspaces:
+    - name: workspace
+      workspace: source
+  - name: stage-gitops-sync
+    taskRef:
+      name: argocd-task-sync-and-wait
+    runAfter:
+      - stage-git-update
+    params:
+      - name: application_name
+        value: coolstore-stage
+  - name: acs-scan-image
+    taskRef:
+      name: rox-image-scan
+      kind: Task
+    runAfter:
+      - buildah
+    params:
+      - name: output_format
+        value: table
+      - name: image
+        value: $(params.IMAGE_NAME)@$(tasks.buildah.results.IMAGE_DIGEST)
+    when:
+      - input: "$(workspaces.acs-central.bound)"
+        operator: in
+        values: ["true"]
+    workspaces:
+      - name: acs-central
+        workspace: acs-central
+  - name: acs-check-image
+    taskRef:
+      name: rox-image-check
+      kind: Task
+    runAfter:
+      - acs-scan-image
+    params:
+      - name: image
+        value: $(params.IMAGE_NAME)@$(tasks.buildah.results.IMAGE_DIGEST)
+    when:
+      - input: "$(workspaces.acs-central.bound)"
+        operator: in
+        values: ["true"]
+    workspaces:
+      - name: acs-central
+        workspace: acs-central
+  - name: notify-build-complete
+    taskRef:
+      name: send-to-webhook-slack
+      kind: Task
+    runAfter:
+      - acs-check-image
+      - stage-gitops-sync
+    params:
+      - name: console_message
+        value: |-
+          Build of web-nodejs completed
+
+          The build of image $(params.IMAGE_NAME):$(params.IMAGE_TAG) has been completed
+
+          * Quay Image: https://$(params.IMAGE_NAME):$(params.IMAGE_TAG)
+          * ACS Scan: https://$(tasks.variables.results.acs_central_endpoint)/main/vulnerability-management/images/$(tasks.buildah.results.IMAGE_DIGEST)
+          * SonarQube Results: https://$(params.SONARQUBE_HOST)/dashboard?id=web-nodejs
+      - name: message_type
+        value: raw
+      - name: message
+        value: |-
+          {
+            "blocks": [
+              {
+                "type": "header",
+                "text": {
+                  "type": "plain_text",
+                  "text": "Web Pipeline Complete",
+                  "emoji": true
+                }
+              },
+              {
+                "type": "section",
+                "text": {
+                  "type": "mrkdwn",
+                  "text": "Build of web-nodejs completed successfully."
+                }
+              },
+              {
+                "type": "divider"
+              },
+              {
+                "type": "section",
+                "text": {
+                  "type": "mrkdwn",
+                  "text": "*Pipeline Results*"
+                }
+              },
+              {
+                "type": "section",
+                "text": {
+                  "type": "mrkdwn",
+                  "text": "* <$(params.IMAGE_NAME):$(params.IMAGE_TAG)|Quay Image>\n* <https://$(tasks.variables.results.acs_central_endpoint)/main/vulnerability-management/images/$(tasks.buildah.results.IMAGE_DIGEST)|ACS Scan>\n* <https://$(params.SONARQUBE_HOST)/dashboard?id=web-nodejs|SonarQube>"
+                }
+              },
+              {
+                "type": "divider"
+              }
+            ]
+          }
+    workspaces:
+      - name: slack-secret
+        workspace: slack-secret
+  finally:
+    - name: notify-on-fail
+      taskRef:
+        name: send-to-webhook-slack
+        kind: Task
+      when:
+        - input: $(tasks.status)
+          operator: in
+          values: ["Failed"]
+        - input: "$(workspaces.slack-secret.bound)"
+          operator: in
+          values: ["true"]
+      params:
+        - name: message
+          value: "Some tasks in the $(context.pipeline.name) have failed in pipelinerun $(context.pipelinerun.name) failed, please investigate"
+      workspaces:
+        - name: slack-secret
+          workspace: slack-secret
