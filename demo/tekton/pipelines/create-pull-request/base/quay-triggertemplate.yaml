@@ -28,11 +28,11 @@ spec:
           - name: MANIFESTS_GIT_REPO
             value: 'https://github.com/coolstore-demo/coolstore'
           - name: IMAGE
-            value: $(params.docker_url)
+            value: $(tt.params.docker_url)
           - name: IMAGE_TAG
-            value: $(params.updated_tag)
+            value: $(tt.params.updated_tag)
           - name: APPLICATION_NAME
-            value: $(params.name)
+            value: $(tt.params.name)
           - name: SONARQUBE_HOST
             value: sonarqube-dev-tools.apps.rhte.0x74.p1.openshiftapps.com
         workspaces:
