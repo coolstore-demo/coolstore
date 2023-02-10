@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
       - name: inventory-quarkus
-        image: quay.io/bluesman/inventory-quarkus:latest
+        image: quay.io/coolstore-demo/inventory-quarkus:1.0.0
         ports:
         - containerPort: 8080
         readinessProbe:

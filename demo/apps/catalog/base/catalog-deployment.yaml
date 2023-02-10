@@ -26,7 +26,7 @@ spec:
     spec:
       containers:
         - name: catalog-spring-boot
-          image: quay.io/bluesman/catalog-spring-boot:latest
+          image: quay.io/coolstore-demo/catalog-spring-boot:1.0.0
           ports:
             - containerPort: 8080
               protocol: TCP
@@ -48,4 +48,3 @@ spec:
       maxSurge: 25%
   revisionHistoryLimit: 10
   progressDeadlineSeconds: 600
-
