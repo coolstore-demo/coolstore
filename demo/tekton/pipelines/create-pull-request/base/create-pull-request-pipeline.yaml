@@ -1,0 +1,85 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: create-pull-request
+spec:
+  workspaces:
+    - name: gitops-manifests
+    - name: acs-central
+      optional: true
+  params:
+    - name: MANIFESTS_GIT_BRANCH
+      type: string
+      default: main
+    - name: MANIFESTS_GIT_REPO
+      type: string
+      default: https://github.com/coolstore-demo/coolstore
+    - name: IMAGE
+      type: string
+      description: External registry location of image to push without tag
+    - name: IMAGE_TAG
+      type: string
+      description: Tag of image to push to production
+    - name: APPLICATION_NAME
+      type: string
+    - name: SONARQUBE_HOST
+      type: string
+      description: Hostname for sonarqube
+      default: sonarqube-dev-tools.apps.rhte.0x74.p1.openshiftapps.com
+  tasks:
+    - name: variables
+      taskRef:
+        name: variables-from-k8s
+      workspaces:
+        - name: acs-central
+          workspace: acs-central
+    - name: get-image-digest
+      taskRef:
+        name: image-tag-to-digest
+      runAfter:
+        - variables
+      params:
+        - name: image_dest_url
+          value: $(params.IMAGE)
+        - name: image_dest_tag
+          value: $(params.IMAGE_TAG)
+    - name: git-update-branch
+      taskRef:
+        name: git-update-deployment
+      params:
+      - name: GIT_REPOSITORY
+        value: $(params.MANIFESTS_GIT_REPO)
+      - name: GIT_REF
+        value: $(params.MANIFESTS_GIT_BRANCH)
+      - name: NEW_IMAGE
+        value: $(params.IMAGE)
+      - name: NEW_DIGEST
+        value: $(tasks.get-image-digest.results.image_digest)
+      - name: KUSTOMIZATION_PATH
+        value: demo/environments/overlays/prod
+      - name: CREATE_BRANCH_NAME
+        value: $(params.APPLICATION_NAME)-$(params.IMAGE_TAG)
+      runAfter:
+        - get-image-digest
+      workspaces:
+      - name: workspace
+        workspace: gitops-manifests
+    - name: create-prod-pr
+      taskRef:
+        name: task-create-pr
+        kind: Task
+      runAfter:
+        - git-update-branch
+      workspaces:
+        - name: source
+          workspace: gitops-manifests
+      params:
+        - name: title
+          value: Update $(params.APPLICATION_NAME) image to $(params.IMAGE):$(params.IMAGE_TAG)
+        - name: body
+          value: |-
+            ## Security Checklist
+
+            - [ ] [Quay Image Vulnerabilities](https://$(params.IMAGE):$(params.IMAGE_TAG))
+            - [ ] [Advanced Cluster Security Image Vulnerabilities and Policies](https://$(tasks.variables.results.acs_central_endpoint)/main/vulnerability-management/images/$(tasks.get-image-digest.results.image_digest))
+            - [ ] [Sonarqube Results](https://$(params.SONARQUBE_HOST)/dashboard?id=$(params.APPLICATION_NAME))

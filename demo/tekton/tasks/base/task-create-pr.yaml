@@ -25,7 +25,7 @@ spec:
 
         # git create PR
         gh pr create -t "$(params.title)" -b "$(params.body)"
-      workingDir: $(workspaces.source.path)
+      workingDir: $(workspaces.source.path)/git-update-digest-workdir
       env:
         - name: GITHUB_TOKEN
           valueFrom:

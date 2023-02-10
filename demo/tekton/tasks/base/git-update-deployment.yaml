@@ -16,6 +16,7 @@ spec:
     type: string
   - name: GIT_REF
     type: string
+    default: "main"
   - name: NEW_IMAGE
     type: string
   - name: NEW_DIGEST
@@ -35,14 +36,19 @@ spec:
     resources: {}
     script: |
       rm -rf git-update-digest-workdir
-      echo "Cloning $(params.GIT_REPOSITORY):$(params.GIT_REF)"
-      git clone $(params.GIT_REPOSITORY) -b $(params.GIT_REF) git-update-digest-workdir
+
+      echo "Cloning $(params.GIT_REPOSITORY) $(params.GIT_REF)"
+
+      git clone -v $(params.GIT_REPOSITORY) -b $(params.GIT_REF) git-update-digest-workdir
+
       if [ "$(params.CREATE_BRANCH_NAME)" = "skip" ]
       then
         echo "Skip branching"
       else
+        cd git-update-digest-workdir
         git checkout -b $(params.CREATE_BRANCH_NAME)
       fi
+    workingDir: $(workspaces.workspace.path)
   - image: quay.io/wpernath/kustomize-ubi:latest
     name: update-digest
     resources: {}
@@ -68,7 +74,12 @@ spec:
       git add $(params.KUSTOMIZATION_PATH)/kustomization.yaml
       git commit -m "[ci] Image digest updated"
 
-      git push
+      if [ "$(params.CREATE_BRANCH_NAME)" = "skip" ]
+      then
+        git push
+      else
+        git push origin HEAD:$(params.CREATE_BRANCH_NAME)
+      fi
 
       RESULT_SHA="$(git rev-parse HEAD | tr -d '\n')"
       EXIT_CODE="$?"
