@@ -26,6 +26,8 @@ spec:
       env:
         - name: SONAR_SERVER_URL
           value: $(params.SONAR_SERVER_URL)
+        - name: SONAR_TOKEN
+          value: squ_910a317ccc8804a9c6eba9402b6285e7f97bb16f
       workingDir: $(workspaces.source.path)
       volumeMounts:
         - name: dependency-cache
