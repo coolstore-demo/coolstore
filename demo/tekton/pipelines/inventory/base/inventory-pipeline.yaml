@@ -22,6 +22,9 @@ spec:
   - default: main
     name: MANIFESTS_GIT_BRANCH
     type: string
+  - name: COLLECTION_TESTS_URL
+    type: string
+    default: https://raw.githubusercontent.com/coolstore-demo/inventory-quarkus/main/tests/inventory-quarkus-tests.json
   tasks:
   - name: git-clone
     params:
@@ -141,6 +144,20 @@ spec:
     params:
       - name: application_name
         value: coolstore-dev
+  - name: dev-int-test
+    taskRef:
+      name: newman
+      kind: Task
+    runAfter:
+      - dev-gitops-sync
+    params:
+      - name: COLLECTION
+        value: $(params.COLLECTION_TESTS_URL)
+      - name: ENVIRONMENT
+        value: newman-test-env.json
+    workspaces:
+      - name: newman-env
+        workspace: newman-env
   - name: stage-git-update
     params:
     - name: GIT_REPOSITORY
@@ -169,6 +186,20 @@ spec:
     params:
       - name: application_name
         value: coolstore-stage
+  - name: stage-int-test
+    taskRef:
+      name: newman
+      kind: Task
+    runAfter:
+      - stage-gitops-sync
+    params:
+      - name: COLLECTION
+        value: $(params.COLLECTION_TESTS_URL)
+      - name: ENVIRONMENT
+        value: newman-test-env.json
+    workspaces:
+      - name: newman-env
+        workspace: newman-env
   - name: acs-scan-image
     taskRef:
       name: rox-image-scan
@@ -206,5 +237,6 @@ spec:
   workspaces:
   - name: source
   - name: maven-settings
+  - name: newman-env
   - name: acs-central
     optional: true

@@ -1,3 +1,13 @@
+generatorOptions:
+  disableNameSuffixHash: true
+
+configMapGenerator:
+  - name: newman-env
+    files:
+      - config/newman-dev-env.json
+      - config/newman-test-env.json
+      - config/newman-prod-env.json
+
 resources:
 - inventory-pvc.yaml
 - inventory-pipeline.yaml
