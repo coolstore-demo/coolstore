@@ -1,0 +1,21 @@
+---
+apiVersion: triggers.tekton.dev/v1beta1
+kind: EventListener
+metadata:
+  name: quay
+spec:
+  serviceAccountName: pipeline
+  triggers:
+    - name: quay-webhook
+      interceptors:
+        - name: quay-filter-overlay
+          ref:
+            name: "cel"
+          params:
+          - name: "filter"
+            value: "body.updated_tags[0] in ['prod']"
+      bindings:
+        - kind: TriggerBinding
+          ref: quay
+      template:
+        ref: quay
