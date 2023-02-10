@@ -28,7 +28,7 @@ spec:
         workspaces:
         - name: source
           persistentVolumeClaim:
-            claimName: inventory-pvc
+            claimName: inventory-source
         - name: maven-settings
           secret:
             secretName: maven-settings
