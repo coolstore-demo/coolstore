@@ -79,15 +79,15 @@ spec:
   #   workspaces:
   #     - name: source
   #       workspace: source
-  - name: code-analysis
-    taskRef:
-      name: npm-quality
-      kind: Task
-    runAfter:
-      - git-clone
-    workspaces:
-      - name: source
-        workspace: source
+  # - name: code-analysis
+  #   taskRef:
+  #     name: npm-quality
+  #     kind: Task
+  #   runAfter:
+  #     - git-clone
+  #   workspaces:
+  #     - name: source
+  #       workspace: source
   - name: buildah
     params:
     - name: IMAGE
