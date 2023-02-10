@@ -38,3 +38,6 @@ spec:
         - name: newman-env
           configMap:
             name: newman-env
+        - name: slack-secret
+          secret:
+            secretName: slack-deployments-webhook

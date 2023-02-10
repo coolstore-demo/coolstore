@@ -1,0 +1,71 @@
+# Adapted from Tekton Catalog item
+# https://github.com/tektoncd/catalog/tree/main/task/send-to-webhook-slack/0.1
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: send-to-webhook-slack
+  labels:
+    app.kubernetes.io/version: "0.1"
+  annotations:
+    tekton.dev/pipelines.minVersion: "0.12.1"
+    tekton.dev/tags: messaging
+spec:
+  description: >-
+    These tasks post a simple message to a slack channel.
+    This task uses Incoming Webhooks of slack to send the message.
+  params:
+  - name: message
+    type: string
+    description: Basic message, markdown can be used for formatting
+  - name: console_message
+    type: string
+    description: Message to log to console
+    default: ""
+  - name: message_type
+    type: string
+    description: The type of message to send, can be set to "raw" or "markdown". If set to "raw" the user is expected to provide a full json payload conforming to slack's specifications.
+    default: "markdown"
+  workspaces:
+  - name: slack-secret
+    optional: true
+  steps:
+  - name: post
+    image: registry.redhat.io/openshift4/ose-tools-rhel8:v4.10
+    script: |
+      #!/bin/sh
+
+      echo "Preparing to send message..."
+
+      MESSAGE=$(cat <<-END
+      $(params.message)
+      END
+      )
+
+      CONSOLE_MESSAGE=$(cat <<-END
+      $(params.console_message)
+      END
+      )
+
+      # Echo message locally for logging purposes
+      if [ -n "$CONSOLE_MESSAGE" ]; then
+        echo "$CONSOLE_MESSAGE"
+      elif [ -n "$MESSAGE" ]; then
+        echo "$MESSAGE"
+      fi
+
+      if [ $(workspaces.slack-secret.bound) == "true" ] ; then
+        if [ -f "$(workspaces.slack-secret.path)/url" ]; then
+          printf "\nSending to slack...\n\n"
+          URL=$(cat $(workspaces.slack-secret.path)/url)
+
+          if [ "$(params.message_type)" == "raw" ]; then
+            echo "Sending raw message to slack"
+            /usr/bin/curl -s -S -X POST -H 'Content-type: application/json' --data "${MESSAGE}" $URL
+          else
+            echo "Sending message to slack"
+            /usr/bin/curl -s -S -X POST -H 'Content-type: application/json' --data '{"type": "mrkdwn", "text":"$(params.message)"}' $URL
+          fi
+        fi
+      else
+        echo "Note: Slack message was not sent as it was not configured"
+      fi
