@@ -30,7 +30,7 @@ spec:
     spec:
       containers:
         - name: web-nodejs
-          image: quay.io/bluesman/web-nodejs:latest
+          image: quay.io/coolstore-demo/web-nodejs:latest
           ports:
             - containerPort: 8080
               protocol: TCP
