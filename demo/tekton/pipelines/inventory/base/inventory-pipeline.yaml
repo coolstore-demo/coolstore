@@ -154,7 +154,7 @@ spec:
       - name: COLLECTION
         value: $(params.COLLECTION_TESTS_URL)
       - name: ENVIRONMENT
-        value: newman-test-env.json
+        value: newman-dev-env.json
     workspaces:
       - name: newman-env
         workspace: newman-env
