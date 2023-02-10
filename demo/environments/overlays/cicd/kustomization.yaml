@@ -14,3 +14,4 @@ resources:
 - ../../../tekton/pipelines/catalog/base
 - ../../../tekton/pipelines/gateway/base
 - ../../../tekton/pipelines/inventory/base
+- ../../../tekton/pipelines/create-pull-request/base
