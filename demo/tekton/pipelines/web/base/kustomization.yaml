@@ -1,4 +1,5 @@
 resources:
+- dependency-cache-pvc.yaml
 - web-pvc.yaml
 - web-pipeline.yaml
 - web-triggertemplate.yaml

@@ -70,24 +70,15 @@ spec:
     workspaces:
     - name: output
       workspace: source
-  # - name: npm
-  #   taskRef:
-  #     name: npm
-  #     kind: Task
-  #   runAfter:
-  #     - git-clone
-  #   workspaces:
-  #     - name: source
-  #       workspace: source
-  # - name: code-analysis
-  #   taskRef:
-  #     name: npm-quality
-  #     kind: Task
-  #   runAfter:
-  #     - git-clone
-  #   workspaces:
-  #     - name: source
-  #       workspace: source
+  - name: code-analysis
+    taskRef:
+      name: npm-quality
+      kind: Task
+    runAfter:
+      - git-clone
+    workspaces:
+      - name: source
+        workspace: source
   - name: buildah
     params:
     - name: IMAGE
@@ -107,7 +98,7 @@ spec:
     - name: SKIP_PUSH
       value: "false"
     runAfter:
-    - git-clone
+    - code-analysis
     taskRef:
       kind: ClusterTask
       name: buildah
