@@ -31,7 +31,7 @@ spec:
             claimName: catalog-pvc
         - name: maven-settings
           secret:
-            name: maven-settings
+            secretName: maven-settings
         - name: acs-central
           secret:
-            name: acs-central
+            secretName: acs-central
