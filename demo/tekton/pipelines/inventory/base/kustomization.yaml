@@ -5,7 +5,7 @@ configMapGenerator:
   - name: newman-env
     files:
       - config/newman-dev-env.json
-      - config/newman-test-env.json
+      - config/newman-stage-env.json
       - config/newman-prod-env.json
 
 resources:
