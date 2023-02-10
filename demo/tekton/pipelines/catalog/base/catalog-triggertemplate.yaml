@@ -34,4 +34,4 @@ spec:
             name: maven-settings
         - name: acs-central
           secret:
-            name: acd-central
+            name: acs-central
