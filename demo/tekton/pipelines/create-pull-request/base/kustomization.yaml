@@ -4,3 +4,4 @@ resources:
 - quay-eventlistener.yaml
 - quay-triggerbinding.yaml
 - quay-triggertemplate.yaml
+- quay-el-route.yaml
