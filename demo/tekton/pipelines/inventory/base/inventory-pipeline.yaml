@@ -281,7 +281,7 @@ spec:
                 "type": "header",
                 "text": {
                   "type": "plain_text",
-                  "text": "Server Pipeline Complete",
+                  "text": "Inventory Pipeline Complete",
                   "emoji": true
                 }
               },
