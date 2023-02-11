@@ -69,4 +69,4 @@ applications:
     destination:
       namespace: openshift-gitops
     source:
-      path: infra/components/pipelines-operator/base
+      path: infra/components/pipelines-operator/overlays/chains
