@@ -12,11 +12,11 @@ spec:
           argocd.argoproj.io/compare-options: IgnoreExtraneous
           argocd.argoproj.io/sync-options: Prune=false
         labels:
-          tekton.dev/pipeline: inventory-prod-test
-        generateName: inventory-prod-test-
+          tekton.dev/pipeline: inventory-prod-test-pipeline
+        generateName: inventory-prod-test-pipeline-
       spec:
         pipelineRef:
-          name: inventory-prod-test
+          name: inventory-prod-test-pipeline
         workspaces:
         - name: newman-env
           configMap:
