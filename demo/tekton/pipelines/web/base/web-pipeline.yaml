@@ -204,12 +204,30 @@ spec:
     workspaces:
       - name: acs-central
         workspace: acs-central
-  - name: notify-build-complete
+  - name: notify-on-scan-fail
     taskRef:
       name: send-to-webhook-slack
       kind: Task
     runAfter:
       - acs-check-image
+    when:
+      - input: "$(tasks.acs-check-image.results.check_passed)"
+        operator: in
+        values: ["false"]
+    params:
+      - name: message
+        value: |-
+          *Web Image Scan Failed*
+          The image scan for $(params.IMAGE_NAME):$(params.IMAGE_TAG) failed, please view test results here: https://$(tasks.variables.results.acs_central_endpoint)/main/vulnerability-management/images/$(tasks.buildah.results.IMAGE_DIGEST)
+    workspaces:
+      - name: slack-secret
+        workspace: slack-secret
+  - name: notify-build-complete
+    taskRef:
+      name: send-to-webhook-slack
+      kind: Task
+    runAfter:
+      - notify-on-scan-fail
       - stage-gitops-sync
     params:
       - name: console_message
