@@ -1,0 +1,29 @@
+---
+apiVersion: triggers.tekton.dev/v1beta1
+kind: EventListener
+metadata:
+  name: inventory-prod-test
+spec:
+  serviceAccountName: pipeline
+  triggers:
+    - name: inventory-prod-test
+      template:
+        ref: server-post-prod
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: el-inventory-prod-test
+  labels:
+    app.kubernetes.io/managed-by: EventListener
+    app.kubernetes.io/part-of: Triggers
+    eventlistener: inventory
+spec:
+  port:
+    targetPort: 8080
+  to:
+    kind: "Service"
+    name: el-inventory-prod-test
+    weight: 100
+  tls:
+    termination: edge

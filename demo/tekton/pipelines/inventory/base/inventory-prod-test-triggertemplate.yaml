@@ -1,0 +1,26 @@
+---
+apiVersion: triggers.tekton.dev/v1beta1
+kind: TriggerTemplate
+metadata:
+  name: inventory-prod-test
+spec:
+  resourcetemplates:
+    - apiVersion: tekton.dev/v1beta1
+      kind: PipelineRun
+      metadata:
+        annotations:
+          argocd.argoproj.io/compare-options: IgnoreExtraneous
+          argocd.argoproj.io/sync-options: Prune=false
+        labels:
+          tekton.dev/pipeline: inventory-prod-test
+        generateName: inventory-prod-test-
+      spec:
+        pipelineRef:
+          name: inventory-prod-test
+        workspaces:
+        - name: newman-env
+          configMap:
+            name: newman-env
+        - name: slack-secret
+          secret:
+            secretName: slack-deployments-webhook

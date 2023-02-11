@@ -11,6 +11,9 @@ configMapGenerator:
 resources:
 - inventory-pvc.yaml
 - inventory-pipeline.yaml
+- inventory-prod-test-pipeline.yaml
+- inventory-prod-test-eventlistener.yaml
+- inventory-prod-test-triggertemplate.yaml
 - inventory-triggertemplate.yaml
 - inventory-eventlistener.yaml
 - inventory-el-route.yaml

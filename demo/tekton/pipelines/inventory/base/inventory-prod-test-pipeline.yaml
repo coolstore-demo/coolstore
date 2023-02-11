@@ -1,0 +1,35 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: inventory-prod-test-pipeline
+spec:
+  workspaces:
+    - name: newman-env
+    - name: slack-secret
+      optional: true
+  tasks:
+    - name: prod-test
+      taskRef:
+        name: newman
+      params:
+        - name: COLLECTION
+          value: https://raw.githubusercontent.com/coolstore-demo/inventory-quarkus/main/tests/inventory-quarkus-tests.json
+        - name: ENVIRONMENT
+          value: newman-prod-env.json
+      workspaces:
+        - name: newman-env
+          workspace: newman-env
+  finally:
+    - name: notify
+      taskRef:
+        name: send-to-webhook-slack
+      when:
+        - input: "$(workspaces.slack-secret.bound)"
+          operator: in
+          values: ["true"]
+      params:
+        - name: message
+          value: "Inventory production has been synchronized by ArgoCD, test status: $(tasks.prod-test.status)"
+      workspaces:
+        - name: slack-secret
+          workspace: slack-secret
