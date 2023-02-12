@@ -2,6 +2,7 @@ namespace: coolstore-dev
 
 resources:
 - ../../base
+
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 images:
@@ -11,3 +12,14 @@ images:
   name: quay.io/coolstore-demo/inventory-quarkus
 - digest: sha256:9aad3fdda67a33bace79e119f287e5c1066ef5d9849b28eaaf4c905d059ecb3f
   name: quay.io/coolstore-demo/web-nodejs
+
+patches:
+- target:
+    kind: Deployment
+    labelSelector: "app=web-nodejs"
+  patch: |-
+    - op: replace
+      path: /spec/template/spec/containers/0/env/0
+      value:
+        name: SECURE_COOLSTORE_GW_ENDPOINT
+        value: https://gateway-vertx-coolstore-dev.apps.rhte.0x74.p1.openshiftapps.com/
