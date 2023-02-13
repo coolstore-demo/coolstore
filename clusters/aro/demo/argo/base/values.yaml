@@ -32,4 +32,4 @@ applications:
     destination:
       namespace: coolstore-prod
     source:
-      path: clusters/aro/environments/overlays/prod
+      path: clusters/aro/demo/environments/overlays/prod
