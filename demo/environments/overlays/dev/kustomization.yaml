@@ -8,18 +8,18 @@ kind: Kustomization
 images:
 - digest: sha256:e3088eb468cd6e4bb9efa5b6b5adedf0bac45f25722026356740cb5cb1ada350
   name: quay.io/coolstore-demo/catalog-spring-boot
-- digest: sha256:6431ee97f114b6923d21de0e17b64bbaa30530d8e0d398891ef0c125296497e1
+- digest: sha256:247981404d14384734f8d19de8266b71c1ef703970693e7262c32a96cb1d2426
   name: quay.io/coolstore-demo/inventory-quarkus
 - digest: sha256:9aad3fdda67a33bace79e119f287e5c1066ef5d9849b28eaaf4c905d059ecb3f
   name: quay.io/coolstore-demo/web-nodejs
 
 patches:
-- target:
-    kind: Deployment
-    labelSelector: "app=web-nodejs"
-  patch: |-
+- patch: |-
     - op: replace
       path: /spec/template/spec/containers/0/env/0
       value:
         name: SECURE_COOLSTORE_GW_ENDPOINT
         value: https://gateway-vertx-coolstore-dev.apps.rhte.0x74.p1.openshiftapps.com/
+  target:
+    kind: Deployment
+    labelSelector: app=web-nodejs
