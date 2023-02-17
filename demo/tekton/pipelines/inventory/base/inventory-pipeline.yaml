@@ -324,7 +324,7 @@ spec:
                 "type": "section",
                 "text": {
                   "type": "mrkdwn",
-                  "text": "* <https://console-openshift-console.apps.rhte.0x74.p1.openshiftapps.com/k8s/ns/coolstore-cicd/tekton.dev~v1beta1~PipelineRun/$(context.pipelinerun.name)|$(context.pipelinerun.name)>\n* <$(params.IMAGE_NAME):$(params.IMAGE_TAG)|Quay Image>\n* <https://$(tasks.variables.results.acs_central_endpoint)/main/vulnerability-management/images/$(tasks.buildah.results.IMAGE_DIGEST)|ACS Scan>\n* <https://$(params.SONARQUBE_HOST)/dashboard?id=inventory-quarkus|SonarQube>"
+                  "text": "* <$(context.pipelinerun.name)|https://console-openshift-console.apps.rhte.0x74.p1.openshiftapps.com/k8s/ns/coolstore-cicd/tekton.dev~v1beta1~PipelineRun/$(context.pipelinerun.name)>\n* <$(params.IMAGE_NAME):$(params.IMAGE_TAG)|Quay Image>\n* <https://$(tasks.variables.results.acs_central_endpoint)/main/vulnerability-management/images/$(tasks.buildah.results.IMAGE_DIGEST)|ACS Scan>\n* <https://$(params.SONARQUBE_HOST)/dashboard?id=inventory-quarkus|SonarQube>"
                 }
               },
               {
