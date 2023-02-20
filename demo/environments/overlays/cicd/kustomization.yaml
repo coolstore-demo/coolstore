@@ -9,6 +9,7 @@ secretGenerator:
   - secrets/settings.xml
 
 resources:
+- coolstore-devs-rolebinding.yaml
 - ../../../tekton/tasks/base
 - ../../../tekton/pipelines/common/base
 - ../../../tekton/pipelines/catalog/base

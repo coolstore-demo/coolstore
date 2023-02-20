@@ -1,6 +1,7 @@
 namespace: coolstore-stage
 
 resources:
+- coolstore-devs-rolebinding.yaml
 - ../../base
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
