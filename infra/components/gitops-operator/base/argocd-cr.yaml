@@ -67,7 +67,7 @@ spec:
   rbac:
     defaultPolicy: ''
     policy: |
-      p, role:coolstire-admin, clusters, get, *, allow
+      p, role:coolstore-admin, clusters, get, *, allow
       p, role:coolstore-admin, projects, get, coolstore, allow
       p, role:coolstore-admin, applications, *, coolstore/*, allow
       p, role:coolstore-dev, clusters, get, *, allow
@@ -76,7 +76,7 @@ spec:
       p, role:coolstore-dev, applications, *, coolstore/coolstore-dev, allow
       p, role:coolstore-dev, applications, *, coolstore/coolstore-stage, allow
       g, coolstore-admins, role:coolstore-admin
-      g, coolstore-devs, role:coolstore-devs
+      g, coolstore-devs, role:coolstore-dev
       g, cluster-admins, role:admin
     scopes: '[groups]'
   redis:
