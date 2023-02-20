@@ -65,7 +65,7 @@ spec:
     route:
       enabled: false
   rbac:
-    defaultPolicy: role:readonly
+    defaultPolicy: ''
     policy: |
       p, role:coolstire-admin, clusters, get, *, allow
       p, role:coolstore-admin, projects, get, coolstore, allow
