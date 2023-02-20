@@ -7,7 +7,7 @@ kind: Kustomization
 images:
 - digest: sha256:e3088eb468cd6e4bb9efa5b6b5adedf0bac45f25722026356740cb5cb1ada350
   name: quay.io/coolstore-demo/catalog-spring-boot
-- digest: sha256:b01378c34dc2275c80666e38cb7bc74269d48e59272e31b0b26d22984b50a926
+- digest: sha256:37a01f014309581fb214aef0ab624772ce53aec9d02b3d92259429fbc6f52c1e
   name: quay.io/coolstore-demo/inventory-quarkus
 - digest: sha256:c3f1b293c2b9ddfb7d7042b2aca2550f9bdbb4724d90154ecc14df9f9bfe87ad
   name: quay.io/coolstore-demo/web-nodejs
