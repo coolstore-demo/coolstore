@@ -11,7 +11,7 @@ images:
   name: quay.io/coolstore-demo/catalog-spring-boot
 - digest: sha256:ce8f72179ec4fdfe7fba750c0a94a9b9ee66b998fba6744466296ca0f2724da6
   name: quay.io/coolstore-demo/inventory-quarkus
-- digest: sha256:c3f1b293c2b9ddfb7d7042b2aca2550f9bdbb4724d90154ecc14df9f9bfe87ad
+- digest: sha256:fc4776cc06dd91e3541b65c2b1e8f76f3b00839b8499ab04a872fc9ba0fb1e6e
   name: quay.io/coolstore-demo/web-nodejs
 
 patches:
