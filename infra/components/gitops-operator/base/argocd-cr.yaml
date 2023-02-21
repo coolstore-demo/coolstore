@@ -67,6 +67,9 @@ spec:
   rbac:
     defaultPolicy: ''
     policy: |
+      p, role:coolstore-pipeline, projects, get, coolstore, allow
+      p, role:coolstore-pipeline, applications, get, coolstore/*, allow
+      p, role:coolstore-pipeline, applications, sync, coolstore/*, allow
       p, role:coolstore-admin, clusters, get, *, allow
       p, role:coolstore-admin, projects, get, coolstore, allow
       p, role:coolstore-admin, applications, *, coolstore/*, allow
@@ -78,7 +81,8 @@ spec:
       g, coolstore-admins, role:coolstore-admin
       g, coolstore-devs, role:coolstore-dev
       g, cluster-admins, role:admin
-    scopes: '[groups]'
+      g, coolstore-pipeline, role:coolstore-pipeline
+    scopes: '[accounts,groups]'
   redis:
     resources:
       limits:
