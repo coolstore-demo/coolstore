@@ -59,7 +59,7 @@ spec:
         - name: ACCOUNTS_NAMESPACES
           value: "coolstore-pipeline=coolstore-cicd"
         - name: ARGO_SERVER_HOST
-          value: "openshift-gitops-server-openshift-gitops.apps.rhte.0x74.p1.openshiftapps.com"
+          value: "openshift-gitops-server-openshift-gitops.apps.summit23soul.197v.p1.openshiftapps.com"
         - name: ARGO_INSTANCE_NAME
           value: "openshift-gitops"
         imagePullPolicy: Always

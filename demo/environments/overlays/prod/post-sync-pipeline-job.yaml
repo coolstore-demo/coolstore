@@ -21,7 +21,7 @@ spec:
           - "{}"
           - "--connect-timeout"
           - "60"
-          - "https://el-route-inventory-prod-coolstore-cicd.apps.rhte.0x74.p1.openshiftapps.com/"
+          - "https://el-route-inventory-prod-coolstore-cicd.apps.summit23soul.197v.p1.openshiftapps.com/"
           imagePullPolicy: Always
           name: post-sync-pipeline
       dnsPolicy: ClusterFirst

@@ -32,7 +32,7 @@ spec:
   - name: SONARQUBE_HOST
     type: string
     description: Hostname for sonarqube
-    default: sonarqube-dev-tools.apps.rhte.0x74.p1.openshiftapps.com
+    default: sonarqube-dev-tools.apps.summit23soul.197v.p1.openshiftapps.com
   tasks:
   - name: variables
     taskRef:

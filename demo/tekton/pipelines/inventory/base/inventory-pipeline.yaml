@@ -36,7 +36,7 @@ spec:
   - name: SONARQUBE_HOST
     type: string
     description: Hostname for sonarqube
-    default: sonarqube-dev-tools.apps.rhte.0x74.p1.openshiftapps.com
+    default: sonarqube-dev-tools.apps.summit23soul.197v.p1.openshiftapps.com
   tasks:
   - name: variables
     taskRef:
@@ -324,7 +324,7 @@ spec:
                 "type": "section",
                 "text": {
                   "type": "mrkdwn",
-                  "text": "* <https://console-openshift-console.apps.rhte.0x74.p1.openshiftapps.com/k8s/ns/coolstore-cicd/tekton.dev~v1beta1~PipelineRun/$(context.pipelineRun.name)|PipelineRun>\n* <$(params.IMAGE_NAME):$(params.IMAGE_TAG)|Quay Image>\n* <https://$(tasks.variables.results.acs_central_endpoint)/main/vulnerability-management/images/$(tasks.buildah.results.IMAGE_DIGEST)|ACS Scan>\n* <https://$(params.SONARQUBE_HOST)/dashboard?id=inventory-quarkus|SonarQube>"
+                  "text": "* <https://console-openshift-console.apps.summit23soul.197v.p1.openshiftapps.com/k8s/ns/coolstore-cicd/tekton.dev~v1beta1~PipelineRun/$(context.pipelineRun.name)|PipelineRun>\n* <$(params.IMAGE_NAME):$(params.IMAGE_TAG)|Quay Image>\n* <https://$(tasks.variables.results.acs_central_endpoint)/main/vulnerability-management/images/$(tasks.buildah.results.IMAGE_DIGEST)|ACS Scan>\n* <https://$(params.SONARQUBE_HOST)/dashboard?id=inventory-quarkus|SonarQube>"
                 }
               },
               {

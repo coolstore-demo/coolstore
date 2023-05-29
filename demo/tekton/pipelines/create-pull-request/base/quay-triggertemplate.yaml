@@ -34,7 +34,7 @@ spec:
           - name: APPLICATION_NAME
             value: $(tt.params.name)
           - name: SONARQUBE_HOST
-            value: sonarqube-dev-tools.apps.rhte.0x74.p1.openshiftapps.com
+            value: sonarqube-dev-tools.apps.summit23soul.197v.p1.openshiftapps.com
         workspaces:
           - name: gitops-manifests
             persistentVolumeClaim:
