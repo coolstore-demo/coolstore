@@ -21,7 +21,6 @@ spec:
       app: gateway-vertx
   template:
     metadata:
-      creationTimestamp: null
       labels:
         app: gateway-vertx
     spec:

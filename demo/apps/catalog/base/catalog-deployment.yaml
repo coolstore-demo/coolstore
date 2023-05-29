@@ -21,7 +21,6 @@ spec:
       app: catalog-spring-boot
   template:
     metadata:
-      creationTimestamp: null
       labels:
         app: catalog-spring-boot
         deployment: catalog-spring-boot

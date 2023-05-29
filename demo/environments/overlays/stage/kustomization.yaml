@@ -19,7 +19,7 @@ patches:
       path: /spec/template/spec/containers/0/env/0
       value:
         name: SECURE_COOLSTORE_GW_ENDPOINT
-        value: https://gateway-vertx-coolstore-stage.apps.rhte.0x74.p1.openshiftapps.com/
+        value: https://gateway-vertx-coolstore-stage.apps.summit23soul.197v.p1.openshiftapps.com/
   target:
     kind: Deployment
     labelSelector: app=web-nodejs

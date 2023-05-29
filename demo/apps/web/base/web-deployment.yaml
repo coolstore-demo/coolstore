@@ -23,7 +23,6 @@ spec:
       app: web-nodejs
   template:
     metadata:
-      creationTimestamp: null
       labels:
         app: web-nodejs
         deployment: web-nodejs
@@ -37,7 +36,7 @@ spec:
           env:
             - name: SECURE_COOLSTORE_GW_ENDPOINT
               value: >-
-                https://gateway-vertx-coolstore-prod.apps.rhte.0x74.p1.openshiftapps.com/
+                https://gateway-vertx-coolstore-prod.apps.summit23soul.197v.p1.openshiftapps.com/
           resources: {}
           terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: File
