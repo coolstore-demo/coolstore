@@ -6,7 +6,7 @@ resources:
 - task-create-pr.yaml
 - task-image-tag-to-digest.yaml
 - task-variables.yaml
-- https://github.com/redhat-cop/gitops-catalog/openshift-pipelines-tasks/newman/base
+- task-newman.yaml
 - task-npm.yaml
 - task-npm-quality.yaml
 - task-send-to-webhook-slack.yaml
