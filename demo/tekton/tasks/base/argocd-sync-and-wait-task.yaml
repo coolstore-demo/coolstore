@@ -51,4 +51,4 @@ spec:
         argocd app wait "$(params.application_name)" --operation "$(params.flags)"
 
         # Should not need this but add for now, there seems to be a timing issue in Natale's environment
-        sleep 5
+        sleep 10
