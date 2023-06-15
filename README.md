@@ -1,5 +1,3 @@
-Under development, not tested yet.
-
 Steps to install demo:
 
 1. Login into your empty cluster as cluster-admin
