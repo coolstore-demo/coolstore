@@ -68,6 +68,12 @@ applications:
       argocd.argoproj.io/sync-wave: '21'
     source:
       path: infra/components/dev-tools/overlays/default
+    syncPolicyRetry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m
 
   console-links:
     annotations:
