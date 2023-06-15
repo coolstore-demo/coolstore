@@ -1,0 +1,17 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: bootstrap
+  namespace: openshift-gitops
+spec:
+  destination:
+    namespace: openshift-gitops
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: clusters/rhdp/argo/base
+    repoURL: https://github.com/coolstore-demo/coolstore.git
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      selfHeal: true

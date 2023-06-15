@@ -63,3 +63,6 @@ do
 done
 
 echo "GitOps Operator ready"
+
+echo "Adding bootstrap app-of-app"
+oc apply -k bootstrap/argo/base

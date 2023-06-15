@@ -1,0 +1,84 @@
+default:
+  app:
+    enabled: true
+    enableAutoSync: true
+    autoSyncPrune: false
+    project: cluster-config
+    destination:
+      namespace: openshift-gitops
+      server: https://kubernetes.default.svc
+    source:
+      repoURL: https://github.com/coolstore-demo/coolstore.git
+      targetRevision: HEAD
+
+projects:
+
+  cluster-config:
+    description: Cluster Configuration
+    namespace: openshift-gitops
+    sourceRepos:
+    - https://github.com/coolstore-demo/coolstore.git
+    destinations: |
+      - namespace: '*'
+        server: https://kubernetes.default.svc
+    extraFields: |
+      clusterResourceWhitelist:
+      - group: '*'
+        kind: '*'
+
+applications:
+
+  groups:
+    annotations:
+      argocd.argoproj.io/sync-wave: '1'
+    source:
+      path: infra/components/groups/base
+
+  namespaces:
+    annotations:
+      argocd.argoproj.io/sync-wave: '1'
+    destination:
+      namespace: openshift-gitops
+    source:
+      path: infra/components/namespaces/base
+
+  acs:
+    annotations:
+      argocd.argoproj.io/sync-wave: '11'
+    source:
+      path: infra/components/acs-operator/overlays/oauth
+
+  pipelines:
+    annotations:
+      argocd.argoproj.io/sync-wave: '11'
+    destination:
+      namespace: openshift-gitops
+    source:
+      path: infra/components/pipelines-operator/overlays/chains
+
+  # Generates ACS tokens for Pipelines to consume
+  acs-tokens:
+    annotations:
+      argocd.argoproj.io/sync-wave: '21'
+    source:
+      path: infra/components/acs-tokens/base
+
+  dev-tools:
+    annotations:
+      argocd.argoproj.io/sync-wave: '21'
+    source:
+      path: infra/components/dev-tools/overlays/default
+
+  console-links:
+    annotations:
+      argocd.argoproj.io/sync-wave: '31'
+    source:
+      path: infra/components/consolelinks/overlays/default
+
+  gitops-local-accounts:
+    annotations:
+      argocd.argoproj.io/sync-wave: '31'
+    destination:
+      namespace: openshift-gitops
+    source:
+      path: infra/components/gitops-operator/local-accounts-job/base
