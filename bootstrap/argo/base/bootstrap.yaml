@@ -11,7 +11,7 @@ spec:
   source:
     path: clusters/rhdp/argo/base
     repoURL: https://github.com/coolstore-demo/coolstore.git
-    targetRevision: HEAD
+    targetRevision: rhdp
   syncPolicy:
     automated:
       selfHeal: true

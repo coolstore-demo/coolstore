@@ -9,7 +9,7 @@ default:
       server: https://kubernetes.default.svc
     source:
       repoURL: https://github.com/coolstore-demo/coolstore.git
-      targetRevision: HEAD
+      targetRevision: rhdp
 
 projects:
 
