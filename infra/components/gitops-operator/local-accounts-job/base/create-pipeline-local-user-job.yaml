@@ -2,6 +2,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: create-pipeline-local-user
+  namespace: openshift-gitops
   annotations:
     argocd.argoproj.io/hook: PostSync
     argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
@@ -59,7 +60,7 @@ spec:
         - name: ACCOUNTS_NAMESPACES
           value: "coolstore-pipeline=coolstore-cicd"
         - name: ARGO_SERVER_HOST
-          value: "openshift-gitops-server-openshift-gitops.apps.summit23soul.197v.p1.openshiftapps.com"
+          value: "openshift-gitops-server-openshift-gitops.${SUB_DOMAIN}"
         - name: ARGO_INSTANCE_NAME
           value: "openshift-gitops"
         imagePullPolicy: Always

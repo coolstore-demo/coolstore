@@ -1,0 +1,2 @@
+resources:
+- create-pipeline-local-user-job.yaml

@@ -4,85 +4,38 @@ metadata:
   name: openshift-gitops
   namespace: openshift-gitops
 spec:
-  applicationInstanceLabelKey: argocd.argoproj.io/instance
-  applicationSet:
-    resources:
-      limits:
-        cpu: "2"
-        memory: 1Gi
-      requests:
-        cpu: 250m
-        memory: 512Mi
-    webhookServer:
-      ingress:
-        enabled: false
-      route:
-        enabled: false
+  resourceTrackingMethod: annotation
+  applicationSet: {}
+  disableAdmin: false
+  extraConfig:
+    accounts.admin: apiKey, login
+    ui.cssurl: 'https://gnunn-gitops.github.io/cluster-config/themes/{{ fromClusterClaim "gitops" }}/custom-cluster.css'
   configManagementPlugins: |-
     - name: kustomize-envvar
       generate:
         command: ["sh", "-c"]
         args: ["kustomize build --enable-helm . | perl -pe 's{\\$(\\{)?(\\w+)(?(1)\\})}{$ENV{$2} // $&}ge'"]
+  kustomizeBuildOptions: "--enable-helm --enable-alpha-plugins"
   controller:
     resources:
       limits:
-        cpu: "2"
         memory: 4Gi
       requests:
-        cpu: "1"
+        cpu: 1000m
         memory: 3Gi
-  extraConfig:
-    accounts.coolstore-pipeline: apiKey
-  grafana:
-    enabled: false
-    ingress:
-      enabled: false
-    resources:
-      limits:
-        cpu: 500m
-        memory: 256Mi
-      requests:
-        cpu: 250m
-        memory: 128Mi
-    route:
-      enabled: false
-  ha:
-    enabled: false
-    resources:
-      limits:
-        cpu: 500m
-        memory: 256Mi
-      requests:
-        cpu: 250m
-        memory: 128Mi
-  kustomizeBuildOptions: --enable-helm
-  notifications:
+  monitoring:
     enabled: true
-  prometheus:
-    enabled: false
-    ingress:
-      enabled: false
-    route:
-      enabled: false
-  rbac:
-    defaultPolicy: ''
-    policy: |
-      p, role:coolstore-pipeline, projects, get, coolstore, allow
-      p, role:coolstore-pipeline, applications, get, coolstore/*, allow
-      p, role:coolstore-pipeline, applications, sync, coolstore/*, allow
-      p, role:coolstore-admin, clusters, get, *, allow
-      p, role:coolstore-admin, projects, get, coolstore, allow
-      p, role:coolstore-admin, applications, *, coolstore/*, allow
-      p, role:coolstore-dev, clusters, get, *, allow
-      p, role:coolstore-dev, projects, get, coolstore, allow
-      p, role:coolstore-dev, applications, *, coolstore/coolstore-cicd, allow
-      p, role:coolstore-dev, applications, *, coolstore/coolstore-dev, allow
-      p, role:coolstore-dev, applications, *, coolstore/coolstore-stage, allow
-      g, coolstore-admins, role:coolstore-admin
-      g, coolstore-devs, role:coolstore-dev
-      g, cluster-admins, role:admin
-      g, coolstore-pipeline, role:coolstore-pipeline
-    scopes: '[accounts,groups]'
+  repo:
+    env:
+      - name: SUB_DOMAIN
+        value: '${SUB_DOMAIN}'
+    resources:
+      limits:
+        cpu: '1'
+        memory: 1.5Gi
+      requests:
+        cpu: 250m
+        memory: 768Mi
   redis:
     resources:
       limits:
@@ -91,17 +44,23 @@ spec:
       requests:
         cpu: 250m
         memory: 256Mi
-  repo:
-    resources:
-      limits:
-        cpu: "1"
-        memory: 1536Mi
-      requests:
-        cpu: 250m
-        memory: 768Mi
-  resourceCustomizations: |
-    argoproj.io/Application:
-      health.lua: |
+  server:
+    insecure: true
+    route:
+      enabled: true
+      tls:
+        termination: edge
+        insecureEdgeTerminationPolicy: Redirect
+  sso:
+    dex:
+      openShiftOAuth: true
+    provider: dex
+  notifications:
+    enabled: true
+  resourceHealthChecks:
+    - group: argoproj.io
+      kind: Application
+      check: |
         hs = {}
         hs.status = "Progressing"
         hs.message = ""
@@ -112,8 +71,9 @@ spec:
           end
         end
         return hs
-    operators.coreos.com/Subscription:
-      health.lua: |
+    - group: operators.coreos.com
+      kind: Subscription
+      check: |
         health_status = {}
         if obj.status ~= nil then
           if obj.status.conditions ~= nil then
@@ -148,8 +108,25 @@ spec:
         health_status.status = "Progressing"
         health_status.message = "An install plan for a subscription is pending installation"
         return health_status
-    platform.stackrox.io/Central:
-      health.lua: |
+    - group: operators.coreos.com
+      kind: InstallPlan
+      check: |
+        hs = {}
+        if obj.status ~= nil then
+          if obj.status.phase ~= nil then
+            if obj.status.phase == "Complete" then
+              hs.status = "Healthy"
+              hs.message = obj.status.phase
+              return hs
+            end
+          end
+        end
+        hs.status = "Progressing"
+        hs.message = "Waiting for InstallPlan to complete"
+        return hs
+    - group: platform.stackrox.io
+      kind: Central
+      check: |
         hs = {}
         if obj.status ~= nil and obj.status.conditions ~= nil then
             for i, condition in ipairs(obj.status.conditions) do
@@ -163,12 +140,9 @@ spec:
         hs.status = "Progressing"
         hs.message = "Waiting for Central to deploy."
         return hs
-    route.openshift.io/Route:
-      ignoreDifferences: |
-        jsonPointers:
-        - /status/ingress
-    image.openshift.io/ImageStream:
-      health.lua: |
+    - group: image.openshift.io
+      kind: ImageStream
+      check: |
         hs = {}
         hs.status = "Progressing"
         hs.message = ""
@@ -195,27 +169,9 @@ spec:
           end
         end
         return hs
-    quay.redhat.com/QuayRegistry:
-      ignoreDifferences: |
-        jsonPointers:
-        - /spec/components
-    operators.coreos.com/InstallPlan:
-      health.lua: |
-        hs = {}
-        if obj.status ~= nil then
-          if obj.status.phase ~= nil then
-            if obj.status.phase == "Complete" then
-              hs.status = "Healthy"
-              hs.message = obj.status.phase
-              return hs
-            end
-          end
-        end
-        hs.status = "Progressing"
-        hs.message = "Waiting for InstallPlan to complete"
-        return hs
-    build.openshift.io/Build:
-      health.lua: |
+    - group: build.openshift.io
+      kind: Build
+      check: |
         hs = {}
         if obj.status ~= nil then
           if obj.status.phase ~= nil then
@@ -229,6 +185,28 @@ spec:
         hs.status = "Progressing"
         hs.message = "Waiting for Build to complete"
         return hs
+    # - kind: PersistentVolumeClaim
+    #   check: |
+    #     hs = {}
+    #     if obj.status ~= nil then
+    #       if obj.status.phase ~= nil then
+    #         if obj.status.phase == "Pending" then
+    #           hs.status = "Healthy"
+    #           hs.message = obj.status.phase
+    #           return hs
+    #         end
+    #         if obj.status.phase == "Bound" then
+    #           hs.status = "Healthy"
+    #           hs.message = obj.status.phase
+    #           return hs
+    #         end
+    #       end
+    #     end
+    #     hs.status = "Progressing"
+    #     hs.message = "Waiting for PVC"
+    #     return hs
+  # Bug in operator in how it generates check for objects with no group
+  resourceCustomizations: |
     PersistentVolumeClaim:
       health.lua: |
         hs = {}
@@ -249,6 +227,18 @@ spec:
         hs.status = "Progressing"
         hs.message = "Waiting for certificate"
         return hs
+  resourceIgnoreDifferences:
+    resourceIdentifiers:
+      - group: route.openshift.io
+        kind: Route
+        customization:
+          jsonPointers:
+            - /status/ingress
+      - group: quay.redhat.com
+        kind: QuayRegistry
+        customization:
+          jsonPointers:
+            - /status/ingress
   resourceExclusions: |
     - apiGroups:
       - tekton.dev
@@ -262,38 +252,24 @@ spec:
       kinds:
       - ComplianceCheckResult
       - ComplianceRemediation
-  resourceTrackingMethod: annotation
-  server:
-    autoscale:
-      enabled: false
-    grpc:
-      ingress:
-        enabled: false
-    ingress:
-      enabled: false
-    insecure: true
-    resources:
-      limits:
-        cpu: 500m
-        memory: 256Mi
-      requests:
-        cpu: 125m
-        memory: 128Mi
-    route:
-      enabled: true
-      tls:
-        insecureEdgeTerminationPolicy: Redirect
-        termination: edge
-    service:
-      type: ""
-  sso:
-    dex:
-      openShiftOAuth: true
-      resources:
-        limits:
-          cpu: 500m
-          memory: 256Mi
-        requests:
-          cpu: 250m
-          memory: 128Mi
-    provider: dex
+    - apiGroups:
+      - policy.open-cluster-management.io
+      clusters:
+      - '*'
+      kinds:
+      - ConfigurationPolicy
+  ha:
+    enabled: false
+  rbac:
+    defaultPolicy: 'role:none'
+    policy: |
+      p, role:none, applications, get, */*, deny
+      p, role:none, certificates, get, *, deny
+      p, role:none, clusters, get, *, deny
+      p, role:none, repositories, get, *, deny
+      p, role:none, projects, get, *, deny
+      p, role:none, accounts, get, *, deny
+      p, role:none, gpgkeys, get, *, deny
+      g, system:cluster-admins, role:admin
+      g, cluster-admins, role:admin
+    scopes: "[groups]"
