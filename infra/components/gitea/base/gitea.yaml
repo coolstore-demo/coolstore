@@ -12,8 +12,8 @@ spec:
   giteaAdminPasswordLength: 32
   giteaAdminEmail: admin@ignore-redhat.com
   giteaCreateUsers: true
-  giteaGenerateUserFormat: "user1"
-  giteaUserNumber: 1
+  giteaGenerateUserFormat: "user%d"
+  giteaUserNumber: 3
   giteaUserPassword: openshift
   giteaMigrateRepositories: true
   giteaRepositoriesList:
