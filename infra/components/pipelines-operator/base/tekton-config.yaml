@@ -13,7 +13,7 @@ spec:
       value: "true"
     - name: communityClusterTasks
       value: "true"
-  chains:
+  chain:
     targetNamespace: openshift-pipelines
     artifacts.taskrun.format: in-toto
     artifacts.taskrun.storage: oci
