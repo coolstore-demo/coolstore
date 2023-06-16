@@ -13,7 +13,7 @@ spec:
   giteaAdminEmail: gitea-admin@ignore-redhat.com
   giteaCreateUsers: true
   giteaGenerateUserFormat: "user%d"
-  giteaUserNumber: 2
+  giteaUserNumber: 1
   giteaUserPassword: openshift
   giteaMigrateRepositories: true
   giteaRepositoriesList:
