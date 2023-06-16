@@ -58,6 +58,21 @@ spec:
   notifications:
     enabled: true
   resourceHealthChecks:
+    - group: gpte.opentlc.com
+      kind: Gitea
+      check: |
+        hs = {}
+        hs.status = "Progressing"
+        hs.message = ""
+        if obj.status ~= nil then
+          if ((obj.status.adminSetupComplete ~= nil && obj.status.adminSetupComplete) &&
+             (obj.status.repoMigrationComplete ~= nil && obj.status.repoMigrationComplete) &&
+             (obj.status.userSetupComplete ~= nil && obj.status.userSetupComplete))
+            hs.status = "Healthy"
+            hs.message = "Gitea setup complete"
+          end
+        end
+        return hs
     - group: argoproj.io
       kind: Application
       check: |
