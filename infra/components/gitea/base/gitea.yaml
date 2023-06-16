@@ -10,7 +10,7 @@ spec:
   giteaAdminUser: gitea-admin
   giteaAdminPassword: "openshift"
   giteaAdminPasswordLength: 32
-  giteaAdminEmail: admin@ignore-redhat.com
+  giteaAdminEmail: gitea-admin@ignore-redhat.com
   giteaCreateUsers: true
   giteaGenerateUserFormat: "user%d"
   giteaUserNumber: 2
