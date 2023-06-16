@@ -14,11 +14,3 @@ patches:
     target:
       kind: Subscription
       name: rhacs-operator
-
-# patchesJson6902:
-#   - path: patch-resources.yaml
-#     target:
-#       group: platform.stackrox.io
-#       kind: Central
-#       name: central
-#       version: v1alpha1
