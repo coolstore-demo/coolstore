@@ -48,6 +48,18 @@ applications:
     source:
       path: infra/components/acs-operator/overlays/oauth
 
+  gitea:
+    annotations:
+      argocd.argoproj.io/sync-wave: '11'
+    source:
+      path: infra/components/gitea/base
+    syncPolicyRetry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m
+
   pipelines:
     annotations:
       argocd.argoproj.io/sync-wave: '11'
