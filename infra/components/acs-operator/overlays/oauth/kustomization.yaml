@@ -6,10 +6,19 @@ resources:
   - github.com/redhat-cop/gitops-catalog/advanced-cluster-security-operator/instance/overlays/internal-registry-integration
   - init-acs.yaml
 
-patchesJson6902:
-  - path: patch-resources.yaml
+patches:
+  - patch: |-
+      - op: replace
+        path: /spec/channel
+        value: 'stable'
     target:
-      group: platform.stackrox.io
-      kind: Central
-      name: central
-      version: v1alpha1
+      kind: Subscription
+      name: rhacs-operator
+
+# patchesJson6902:
+#   - path: patch-resources.yaml
+#     target:
+#       group: platform.stackrox.io
+#       kind: Central
+#       name: central
+#       version: v1alpha1
