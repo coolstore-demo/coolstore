@@ -8,7 +8,7 @@ default:
       namespace: openshift-gitops
       server: https://kubernetes.default.svc
     source:
-      repoURL: https://github.com/coolstore-demo/coolstore.git
+      repoURL: https://gitea-gitea.${SUB_DOMAIN}
       targetRevision: rhdp
 
 projects:
@@ -18,6 +18,7 @@ projects:
     namespace: openshift-gitops
     sourceRepos:
     - https://github.com/coolstore-demo/coolstore.git
+    - https://gitea-gitea.${SUB_DOMAIN}
     destinations: |
       - namespace: '*'
         server: https://kubernetes.default.svc
@@ -27,6 +28,19 @@ projects:
         kind: '*'
 
 applications:
+
+  gitea:
+    annotations:
+      argocd.argoproj.io/sync-wave: '0'
+    source:
+      path: infra/components/gitea/base
+      repoURL: https://github.com/coolstore-demo/coolstore.git
+    syncPolicyRetry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m
 
   groups:
     annotations:
@@ -47,18 +61,6 @@ applications:
       argocd.argoproj.io/sync-wave: '11'
     source:
       path: infra/components/acs-operator/overlays/oauth
-
-  gitea:
-    annotations:
-      argocd.argoproj.io/sync-wave: '11'
-    source:
-      path: infra/components/gitea/base
-    syncPolicyRetry:
-      limit: 5
-      backoff:
-        duration: 5s
-        factor: 2
-        maxDuration: 3m
 
   pipelines:
     annotations:
