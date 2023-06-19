@@ -12,6 +12,8 @@ spec:
     path: clusters/rhdp/argo/base
     repoURL: https://github.com/coolstore-demo/coolstore.git
     targetRevision: rhdp
+    plugin:
+      name: kustomize-envvar
   syncPolicy:
     automated:
       selfHeal: true

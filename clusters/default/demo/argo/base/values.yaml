@@ -8,7 +8,7 @@ default:
       namespace: openshift-gitops
       server: https://kubernetes.default.svc
     source:
-      repoURL: https://gitea-gitea.${SUB_DOMAIN}
+      repoURL: https://gitea-gitea.${SUB_DOMAIN}/user1/coolstore
       targetRevision: rhdp
 
 projects:
@@ -17,7 +17,7 @@ projects:
     description: Project for coolstore demo
     namespace: openshift-gitops
     sourceRepos:
-    - https://gitea-gitea.${SUB_DOMAIN}
+    - https://gitea-gitea.${SUB_DOMAIN}/user1/coolstore
     destinations: |
       - namespace: 'coolstore-cicd'
         server: https://kubernetes.default.svc
