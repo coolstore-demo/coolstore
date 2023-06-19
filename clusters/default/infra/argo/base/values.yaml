@@ -44,9 +44,10 @@ applications:
 
   groups:
     annotations:
-      argocd.argoproj.io/sync-wave: '1'
+      argocd.argoproj.io/sync-wave: '0'
     source:
       path: infra/components/groups/base
+      repoURL: https://github.com/coolstore-demo/coolstore.git
 
   namespaces:
     annotations:
