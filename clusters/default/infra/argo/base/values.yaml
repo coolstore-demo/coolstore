@@ -60,6 +60,8 @@ applications:
   odf-operator:
     annotations:
       argocd.argoproj.io/sync-wave: '2'
+    destination:
+      namespace: openshift-storage
     source:
       path: infra/components/odf-operator/operator/overlays/no-registry
       repoURL: https://github.com/coolstore-demo/coolstore.git
@@ -67,13 +69,17 @@ applications:
   odf-instance:
     annotations:
       argocd.argoproj.io/sync-wave: '3'
+    destination:
+      namespace: openshift-storage
     source:
       path: infra/components/odf-operator/instance/base
       repoURL: https://github.com/coolstore-demo/coolstore.git
 
-  quay:
+  quay-operator:
     annotations:
       argocd.argoproj.io/sync-wave: '11'
+    destination:
+      namespace: quay-operator
     source:
       path: infra/components/quay-registry-operator/overlays/default
       repoURL: https://github.com/coolstore-demo/coolstore.git
@@ -88,7 +94,7 @@ applications:
     annotations:
       argocd.argoproj.io/sync-wave: '11'
     destination:
-      namespace: openshift-gitops
+      namespace: openshift-pipelines
     source:
       path: infra/components/pipelines-operator/overlays/chains
 
@@ -102,6 +108,8 @@ applications:
   dev-tools:
     annotations:
       argocd.argoproj.io/sync-wave: '21'
+    destination:
+      namespace: dev-tools
     source:
       path: infra/components/dev-tools/overlays/default
     syncPolicyRetry:
