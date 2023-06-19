@@ -7,9 +7,25 @@ metadata:
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   components:
-    - kind: objectstorage
-      managed: true
+    - managed: true
+      kind: clair
+    - managed: true
+      kind: postgres
+    - managed: true
+      kind: objectstorage
+    - managed: true
+      kind: redis
+    - managed: false
+      kind: horizontalpodautoscaler
+    - managed: true
+      kind: route
+    - managed: true
+      kind: mirror
+    - managed: false
+      kind: monitoring
     - managed: true
       kind: tls
-    - kind: horizontalpodautoscaler
-      managed: false
+    - managed: true
+      kind: quay
+    - managed: true
+      kind: clairpostgres
