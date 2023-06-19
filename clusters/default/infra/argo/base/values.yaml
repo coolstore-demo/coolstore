@@ -62,12 +62,14 @@ applications:
       argocd.argoproj.io/sync-wave: '2'
     source:
       path: infra/components/odf-operator/operator/overlays/no-registry
+      repoURL: https://github.com/coolstore-demo/coolstore.git
 
   odf-instance:
     annotations:
       argocd.argoproj.io/sync-wave: '3'
     source:
       path: infra/components/odf-operator/instance/base
+      repoURL: https://github.com/coolstore-demo/coolstore.git
 
   acs:
     annotations:
