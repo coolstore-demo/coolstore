@@ -11,3 +11,5 @@ spec:
       managed: true
     - managed: true
       kind: tls
+    - kind: horizontalpodautoscaler
+      managed: false
