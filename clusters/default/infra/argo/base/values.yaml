@@ -71,6 +71,13 @@ applications:
       path: infra/components/odf-operator/instance/base
       repoURL: https://github.com/coolstore-demo/coolstore.git
 
+  quay:
+    annotations:
+      argocd.argoproj.io/sync-wave: '11'
+    source:
+      path: infra/components/quay-registry-operator/overlays/default
+      repoURL: https://github.com/coolstore-demo/coolstore.git
+
   acs:
     annotations:
       argocd.argoproj.io/sync-wave: '11'
