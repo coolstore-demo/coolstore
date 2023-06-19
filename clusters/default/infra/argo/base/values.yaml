@@ -57,6 +57,18 @@ applications:
     source:
       path: infra/components/namespaces/base
 
+  odf-operator:
+    annotations:
+      argocd.argoproj.io/sync-wave: '2'
+    source:
+      path: infra/components/odf-operator/operator/overlays/no-registry
+
+  odf-instance:
+    annotations:
+      argocd.argoproj.io/sync-wave: '3'
+    source:
+      path: infra/components/odf-operator/instance/base
+
   acs:
     annotations:
       argocd.argoproj.io/sync-wave: '11'
