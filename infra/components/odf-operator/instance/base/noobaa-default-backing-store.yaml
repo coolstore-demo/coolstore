@@ -11,5 +11,5 @@ spec:
     resources:
       requests:
         storage: 200Gi
-    storageClass: lvms-vg1
+    storageClass: gp3-csi
   type: pv-pool
