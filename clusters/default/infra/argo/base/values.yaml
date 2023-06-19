@@ -83,6 +83,9 @@ applications:
     source:
       path: infra/components/quay-registry-operator/overlays/default
       repoURL: https://github.com/coolstore-demo/coolstore.git
+      extraSourceFields: |
+        plugin:
+          name: kustomize-envvar
 
   acs:
     annotations:

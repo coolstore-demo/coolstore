@@ -6,3 +6,4 @@ namespace: quay-operator
 resources:
 - github.com/redhat-cop/gitops-catalog/quay-operator/operator/overlays/stable-3.8
 - registry.yaml
+- init-quay-job.yaml
