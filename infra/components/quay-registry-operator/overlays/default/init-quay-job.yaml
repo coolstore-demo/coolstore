@@ -51,7 +51,7 @@ spec:
 
               ansible-galaxy collection install -r collections/requirements.yaml
 
-              ansible-playbook -vvv quay-init.yaml -e quay_init_password=$quay_init_password
+              ansible-playbook quay-init.yaml -e quay_init_password=$quay_init_password
 
           name: init-quay
       dnsPolicy: ClusterFirst
