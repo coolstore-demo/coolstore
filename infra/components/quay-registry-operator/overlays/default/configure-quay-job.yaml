@@ -25,17 +25,13 @@ spec:
               echo "tempuser:x:$(id -G | cut -d' ' -f 2)" >> /etc/group
               id
 
-              echo "Waiting for two minutes for quay to be ready"
-
-              sleep 120
-
               git clone https://github.com/coolstore-demo/quay-init
 
-              cd quay-configure
+              cd quay-init
 
               ansible-galaxy collection install -r collections/requirements.yaml
 
-              ansible-playbook quay-init.yaml -e access_token=$token
+              ansible-playbook quay-configure.yaml -e access_token=$token
 
           name: configure-quay
       dnsPolicy: ClusterFirst
