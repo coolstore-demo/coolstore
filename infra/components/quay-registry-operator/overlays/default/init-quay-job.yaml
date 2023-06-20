@@ -26,7 +26,6 @@ spec:
     spec:
       containers:
         - image: registry.redhat.io/ansible-automation-platform-21/ee-supported-rhel8:1.0
-          used when you want to see the password securely, i.e. sealed secrets
           envFrom:
           - secretRef:
               name: init-user-password
