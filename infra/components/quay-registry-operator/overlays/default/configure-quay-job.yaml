@@ -31,7 +31,7 @@ spec:
 
               git clone https://github.com/coolstore-demo/quay-init
 
-              cd quay-init
+              cd quay-configure
 
               ansible-galaxy collection install -r collections/requirements.yaml
 
