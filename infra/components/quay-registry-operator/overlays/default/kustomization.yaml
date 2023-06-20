@@ -3,6 +3,14 @@ kind: Kustomization
 
 namespace: quay-operator
 
+generatorOptions:
+  disableNameSuffixHash: true
+
+secretGenerator:
+  - name: config-bundle-secret
+    files:
+      - config.yaml=config-bundle-secret/config.yaml
+
 resources:
 - github.com/redhat-cop/gitops-catalog/quay-operator/operator/overlays/stable-3.8
 - registry.yaml
