@@ -16,3 +16,4 @@ resources:
 - registry.yaml
 - init-user-password.yaml
 - init-quay-job.yaml
+- configure-quay-job.yaml
