@@ -1,0 +1,40 @@
+---
+- hosts: localhost
+  vars:
+    gitea_username: user1
+    gitea_url:
+
+    webhooks:
+      - repo: inventory-quarkus
+        url: http://el-inventory.coolstore-cicd.svc.cluster.local:8080
+      - repo: gateway-vertx
+        url: http://el-gateway.coolstore-cicd.svc.cluster.local:8080
+      - repo: catalog-spring-boot
+        url: http://el-catalog.coolstore-cicd.svc.cluster.local:8080
+      - repo: web-nodejs
+        url: http://el-web.coolstore-cicd.svc.cluster.local:8080
+      - repo: coolstore
+        url: http://openshift-gitops-server.openshift-gitops.svc.cluster.local/api/webhook
+
+  tasks:
+
+    - name: Create WebHooks in Gitea
+      uri:
+        url: "{{ gitea_url}}/api/v1/repos/{{ gitea_username }}/{{ item.url }}/hooks"
+        method: POST
+        validate_certs: no
+        url_username: "{{ gitea_username }}"
+        url_password: "{{ gitea_password }}"
+        body_format: json
+        body:
+          active: true
+          branch_filter: "*"
+          config:
+            content_type: "json"
+            url: "{{ item.url }}"
+            http_method: "post"
+          events:
+            - "push_only"
+          type: "gitea"
+        status_code: [200, 400]
+      with_items: "{{ webhooks }}"
