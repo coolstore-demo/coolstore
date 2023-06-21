@@ -12,7 +12,7 @@ spec:
     - name: homepage
     - name: updated_tag
   resourcetemplates:
-    - apiVersion: tekton.dev/v1beta1
+    - apiVersion: tekton.dev/v1
       kind: PipelineRun
       metadata:
         labels:
