@@ -9,7 +9,7 @@ default:
       server: https://kubernetes.default.svc
     source:
       repoURL: https://gitea-gitea.${SUB_DOMAIN}/user1/coolstore
-      targetRevision: rhdp
+      targetRevision: main
 
 projects:
 
@@ -35,6 +35,7 @@ applications:
     source:
       path: infra/components/gitea/base
       repoURL: https://github.com/coolstore-demo/coolstore.git
+      targetRevision: rhdp
     syncPolicyRetry:
       limit: 5
       backoff:
@@ -48,6 +49,7 @@ applications:
     source:
       path: infra/components/groups/base
       repoURL: https://github.com/coolstore-demo/coolstore.git
+      targetRevision: rhdp
 
   namespaces:
     annotations:
@@ -64,7 +66,6 @@ applications:
       namespace: openshift-storage
     source:
       path: infra/components/odf-operator/operator/overlays/no-registry
-      repoURL: https://github.com/coolstore-demo/coolstore.git
 
   odf-instance:
     annotations:
@@ -73,7 +74,6 @@ applications:
       namespace: openshift-storage
     source:
       path: infra/components/odf-operator/instance/base
-      repoURL: https://github.com/coolstore-demo/coolstore.git
 
   quay-operator:
     annotations:
@@ -82,7 +82,6 @@ applications:
       namespace: quay-operator
     source:
       path: infra/components/quay-registry-operator/overlays/default
-      repoURL: https://github.com/coolstore-demo/coolstore.git
 
   acs:
     annotations:
