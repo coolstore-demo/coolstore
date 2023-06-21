@@ -2,7 +2,7 @@
 - hosts: localhost
   vars:
     gitea_username: user1
-    gitea_url:
+    gitea_url: http://gitea:3000
 
     webhooks:
       - repo: inventory-quarkus
@@ -20,7 +20,7 @@
 
     - name: Create WebHooks in Gitea
       uri:
-        url: "{{ gitea_url}}/api/v1/repos/{{ gitea_username }}/{{ item.url }}/hooks"
+        url: "{{ gitea_url}}/api/v1/repos/{{ gitea_username }}/{{ item.repo }}/hooks"
         method: POST
         validate_certs: no
         url_username: "{{ gitea_username }}"
