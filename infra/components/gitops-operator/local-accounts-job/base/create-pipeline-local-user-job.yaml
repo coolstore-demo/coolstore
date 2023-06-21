@@ -3,9 +3,6 @@ kind: Job
 metadata:
   name: create-pipeline-local-user
   namespace: openshift-gitops
-  annotations:
-    argocd.argoproj.io/hook: PostSync
-    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
 spec:
   template:
     spec:

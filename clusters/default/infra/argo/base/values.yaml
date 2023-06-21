@@ -29,6 +29,14 @@ projects:
 
 applications:
 
+  gitops-local-accounts:
+    annotations:
+      argocd.argoproj.io/sync-wave: '0'
+    source:
+      path: infra/components/gitops-operator/local-accounts-job/base
+      repoURL: https://github.com/coolstore-demo/coolstore.git
+      targetRevision: rhdp
+
   gitea:
     annotations:
       argocd.argoproj.io/sync-wave: '0'
