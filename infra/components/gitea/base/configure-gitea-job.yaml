@@ -4,8 +4,7 @@ metadata:
   name: configure-gitea
   namespace: gitea
   annotations:
-    argocd.argoproj.io/hook: PostSync
-    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
+    argocd.argoproj.io/sync-wave: "20"
 spec:
   template:
     spec:

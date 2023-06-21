@@ -3,6 +3,7 @@
   vars:
     gitea_username: user1
     gitea_url: http://gitea:3000
+    #gitea_url: https://gitea-gitea.apps.cluster-bcc29.bcc29.sandbox167.opentlc.com
 
     webhooks:
       - repo: inventory-quarkus
@@ -18,13 +19,17 @@
 
   tasks:
 
+    - name: Use username/password
+      set_fact:
+        authorization: "Basic {{ (gitea_username + ':' + gitea_password) | b64encode }}"
+
     - name: Create WebHooks in Gitea
       uri:
         url: "{{ gitea_url}}/api/v1/repos/{{ gitea_username }}/{{ item.repo }}/hooks"
         method: POST
         validate_certs: no
-        url_username: "{{ gitea_username }}"
-        url_password: "{{ gitea_password }}"
+        headers:
+          authorization: "{{ authorization }}"
         body_format: json
         body:
           active: true
@@ -36,5 +41,5 @@
           events:
             - "push_only"
           type: "gitea"
-        status_code: [200, 400]
+        status_code: [201, 400]
       with_items: "{{ webhooks }}"
