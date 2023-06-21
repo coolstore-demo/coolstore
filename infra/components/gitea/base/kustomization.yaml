@@ -3,3 +3,5 @@ resources:
 - https://raw.githubusercontent.com/redhat-gpte-devopsautomation/gitea-operator/master/catalog_source.yaml
 - subscription.yaml
 - gitea.yaml
+- user-password-secret.yaml
+- configure-gitea-job.yaml
