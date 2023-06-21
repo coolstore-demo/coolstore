@@ -13,7 +13,7 @@ spec:
         name: newman
       params:
         - name: COLLECTION
-          value: https://raw.githubusercontent.com/coolstore-demo/inventory-quarkus/main/tests/inventory-quarkus-tests.json
+          value: https://gitea-gitea.${SUB_DOMAIN}/user1/inventory-quarkus/raw/branch/main/tests/inventory-quarkus-tests.json
         - name: ENVIRONMENT
           value: newman-prod-env.json
       workspaces:

@@ -17,13 +17,13 @@ spec:
   - default: quay.io/coolstore-demo/web-nodejs
     name: IMAGE_NAME
     type: string
-  - default: https://github.com/coolstore-demo/web-nodejs.git
+  - default: https://gitea-gitea.${SUB_DOMAIN}/user1/web-nodejs.git
     name: GIT_REPO
     type: string
   - default: main
     name: GIT_BRANCH
     type: string
-  - default: https://github.com/coolstore-demo/coolstore
+  - default: https://gitea-gitea.${SUB_DOMAIN}/user1/coolstore.git
     name: MANIFESTS_GIT_REPO
     type: string
   - default: main
@@ -32,7 +32,7 @@ spec:
   - name: SONARQUBE_HOST
     type: string
     description: Hostname for sonarqube
-    default: sonarqube-dev-tools.apps.summit23soul.197v.p1.openshiftapps.com
+    default: sonarqube-dev-tools.${SUB_DOMAIN}
   tasks:
   - name: variables
     taskRef:

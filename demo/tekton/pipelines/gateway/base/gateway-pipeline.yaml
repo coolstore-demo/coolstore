@@ -10,13 +10,13 @@ spec:
   - default: quay.io/coolstore-demo/gateway-vertx
     name: IMAGE_NAME
     type: string
-  - default: https://github.com/modernizing-java-applications-book/gateway-vertx.git
+  - default: https://gitea-gitea.${SUB_DOMAIN}/user1/gateway-vertx.git
     name: GIT_REPO
     type: string
   - default: main
     name: GIT_BRANCH
     type: string
-  - default: https://github.com/coolstore-demo/coolstore
+  - default: https://gitea-gitea.${SUB_DOMAIN}/user1/coolstore.git
     name: MANIFESTS_GIT_REPO
     type: string
   - default: main
