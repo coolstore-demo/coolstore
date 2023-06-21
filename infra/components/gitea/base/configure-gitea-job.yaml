@@ -27,6 +27,8 @@ spec:
 
               git clone https://github.com/coolstore-demo/coolstore
 
+              git checkout rhdp
+
               cd infra/components/gitea/base/gitea-configure-playbook
 
               ansible-playbook gitea-configure.yaml -e gitea_password=$password
