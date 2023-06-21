@@ -41,6 +41,9 @@ applications:
       namespace: coolstore-cicd
     source:
       path: demo/environments/overlays/cicd
+      extraSourceFields: |
+        plugin:
+          name: kustomize-envvar
 
   coolstore-dev:
     annotations:
