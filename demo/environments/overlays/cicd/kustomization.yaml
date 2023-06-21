@@ -15,6 +15,7 @@ secretGenerator:
   - .dockerconfigjson=secrets/docker-config.json
 
 resources:
+- github-secret.yaml
 - coolstore-devs-rolebinding.yaml
 - ../../../tekton/tasks/base
 - ../../../tekton/pipelines/common/base
@@ -23,3 +24,4 @@ resources:
 - ../../../tekton/pipelines/inventory/base
 - ../../../tekton/pipelines/web/base
 - ../../../tekton/pipelines/create-pull-request/base
+- setup-local-credentials-job.yaml
