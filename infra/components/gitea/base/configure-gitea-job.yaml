@@ -29,8 +29,6 @@ spec:
 
               cd infra/components/gitea/base/gitea-configure-playbook
 
-              ansible-galaxy collection install -r collections/requirements.yaml
-
               ansible-playbook gitea-configure.yaml -e gitea_password=$password
 
           name: configure-gitea
