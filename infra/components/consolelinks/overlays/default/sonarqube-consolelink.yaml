@@ -3,9 +3,9 @@ kind: ConsoleLink
 metadata:
   name: sonarqube
 spec:
-  href: 'https://sonarqube-dev-tools.apps.summit23soul.197v.p1.openshiftapps.com'
+  href: 'https://sonarqube-dev-tools.${SUB_SOMAIN}'
   location: ApplicationMenu
   text: SonarQube
   applicationMenu:
     section: Tools
-    imageURL: https://sonarqube-dev-tools.apps.summit23soul.197v.p1.openshiftapps.com/favicon.ico
+    imageURL: https://sonarqube-dev-tools.${SUB_SOMAIN}/favicon.ico

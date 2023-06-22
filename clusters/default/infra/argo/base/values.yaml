@@ -123,6 +123,9 @@ applications:
       argocd.argoproj.io/sync-wave: '31'
     source:
       path: infra/components/consolelinks/overlays/default
+      extraSourceFields: |
+        plugin:
+          name: kustomize-envvar
 
   gitops-local-accounts:
     annotations:
