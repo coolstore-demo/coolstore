@@ -1,5 +1,6 @@
 ---
 - hosts: localhost
+  connection: local
   vars:
     gitea_username: user1
     gitea_url: http://gitea:3000
