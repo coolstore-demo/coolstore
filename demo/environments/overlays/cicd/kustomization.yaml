@@ -10,9 +10,6 @@ secretGenerator:
 - name: maven-settings
   files:
   - secrets/settings.xml
-- name: docker-config
-  files:
-  - .dockerconfigjson=secrets/docker-config.json
 
 resources:
 - github-secret.yaml
