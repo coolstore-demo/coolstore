@@ -2,6 +2,8 @@
 - hosts: localhost
   connection: local
   vars:
+    ansible_remote_tmp: /runner/.ansible/tmp
+
     gitea_username: user1
     gitea_url: http://gitea:3000
     #gitea_url: https://gitea-gitea.apps.cluster-bcc29.bcc29.sandbox167.opentlc.com
