@@ -9,6 +9,7 @@ spec:
   disableAdmin: false
   extraConfig:
     accounts.admin: apiKey, login
+    accounts.coolstore-pipeline: apiKey
     ui.cssurl: 'https://gnunn-gitops.github.io/cluster-config/themes/{{ fromClusterClaim "gitops" }}/custom-cluster.css'
   configManagementPlugins: |-
     - name: kustomize-envvar
