@@ -30,7 +30,7 @@ spec:
               git checkout rhdp
               cd infra/components/gitea/base/gitea-configure-playbook
 
-              ansible-playbook -vvv gitea-configure.yaml -e gitea_password=$password -e sub_domain=${SUB_DOMAIN}
+              ansible-playbook -vvv gitea-configure.yaml -e gitea_password=$password -e sub_domain="${SUB_DOMAIN}"
 
           name: configure-gitea
       dnsPolicy: ClusterFirst
