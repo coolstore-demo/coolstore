@@ -14,7 +14,7 @@ spec:
   - default: 1.0.0
     name: IMAGE_TAG
     type: string
-  - default: quay.io/coolstore-demo/web-nodejs
+  - default: registry-quay-quay-operator.${SUB_DOMAIN}/coolstore-demo/web-nodejs
     name: IMAGE_NAME
     type: string
   - default: https://gitea-gitea.${SUB_DOMAIN}/user1/web-nodejs.git
@@ -149,7 +149,7 @@ spec:
     - name: GIT_REF
       value: $(params.MANIFESTS_GIT_BRANCH)
     - name: NEW_IMAGE
-      value: quay.io/coolstore-demo/web-nodejs
+      value: registry-quay-quay-operator.${SUB_DOMAIN}/coolstore-demo/web-nodejs
     - name: NEW_DIGEST
       value: $(tasks.buildah.results.IMAGE_DIGEST)
     - name: KUSTOMIZATION_PATH

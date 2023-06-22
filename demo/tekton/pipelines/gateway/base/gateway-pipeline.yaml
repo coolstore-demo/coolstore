@@ -7,7 +7,7 @@ spec:
   - default: 1.0.0
     name: IMAGE_TAG
     type: string
-  - default: quay.io/coolstore-demo/gateway-vertx
+  - default: registry-quay-quay-operator.${SUB_DOMAIN}/coolstore-demo/gateway-vertx
     name: IMAGE_NAME
     type: string
   - default: https://gitea-gitea.${SUB_DOMAIN}/user1/gateway-vertx.git
