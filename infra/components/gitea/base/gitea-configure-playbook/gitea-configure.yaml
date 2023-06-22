@@ -7,15 +7,15 @@
 
     webhooks:
       - repo: inventory-quarkus
-        url: http://el-inventory.coolstore-cicd.svc.cluster.local:8080
+        url: https://el-inventory-coolstore-cicd.{{ sub_domain }}
       - repo: gateway-vertx
-        url: http://el-gateway.coolstore-cicd.svc.cluster.local:8080
+        url: https://el-gateway-coolstore-cicd.{{ sub_domain }}
       - repo: catalog-spring-boot
-        url: http://el-catalog.coolstore-cicd.svc.cluster.local:8080
+        url: https://el-catalog-coolstore-cicd.{{ sub_domain }}
       - repo: web-nodejs
-        url: http://el-web.coolstore-cicd.svc.cluster.local:8080
+        url: https://el-web-coolstore-cicd.{{ sub_domain }}
       - repo: coolstore
-        url: http://openshift-gitops-server.openshift-gitops.svc.cluster.local/api/webhook
+        url: https://openshift-gitops-server-openshift-gitops.{{ sub_domain }}/api/webhook
 
   tasks:
 
@@ -37,9 +37,8 @@
           config:
             content_type: "json"
             url: "{{ item.url }}"
-            http_method: "post"
           events:
-            - "push_only"
+            - "push"
           type: "gitea"
         status_code: [201, 400]
       with_items: "{{ webhooks }}"
