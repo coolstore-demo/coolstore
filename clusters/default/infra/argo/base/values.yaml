@@ -36,6 +36,9 @@ applications:
       path: infra/components/gitea/base
       repoURL: https://github.com/coolstore-demo/coolstore.git
       targetRevision: rhdp
+      extraSourceFields: |
+        plugin:
+          name: kustomize-envvar
     syncPolicyRetry:
       limit: 5
       backoff:
