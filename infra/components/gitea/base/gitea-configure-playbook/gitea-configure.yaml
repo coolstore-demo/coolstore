@@ -1,6 +1,5 @@
 ---
 - hosts: localhost
-  connection: local
   vars:
     gitea_username: user1
     gitea_url: http://gitea:3000
@@ -8,15 +7,15 @@
 
     webhooks:
       - repo: inventory-quarkus
-        host: el-inventory-coolstore-cicd
+        url: http://el-inventory.coolstore-cicd.svc.cluster.local:8080
       - repo: gateway-vertx
-        host: el-gateway-coolstore-cicd
+        url: http://el-gateway.coolstore-cicd.svc.cluster.local:8080
       - repo: catalog-spring-boot
-        host: el-catalog-coolstore-cicd
+        url: http://el-catalog.coolstore-cicd.svc.cluster.local:8080
       - repo: web-nodejs
-        host: el-web-coolstore-cicd
-      # - repo: coolstore
-      #   url: https://openshift-gitops-server-openshift-gitops.{{ sub_domain }}/api/webhook
+        url: http://el-web.coolstore-cicd.svc.cluster.local:8080
+      - repo: coolstore
+        url: http://openshift-gitops-server.openshift-gitops.svc.cluster.local/api/webhook
 
   tasks:
 
@@ -37,9 +36,10 @@
           branch_filter: "*"
           config:
             content_type: "json"
-            url: "https://{{ item.host }}.{{ sub_domain }}"
+            url: "{{ item.url }}"
+            http_method: "post"
           events:
-            - "push"
+            - "push_only"
           type: "gitea"
         status_code: [201, 400]
       with_items: "{{ webhooks }}"
