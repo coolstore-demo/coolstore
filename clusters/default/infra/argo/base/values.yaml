@@ -9,7 +9,7 @@ default:
       server: https://kubernetes.default.svc
     source:
       repoURL: https://gitea-gitea.${SUB_DOMAIN}/user1/coolstore
-      targetRevision: main
+      targetRevision: rhdp
 
 projects:
 
@@ -28,14 +28,6 @@ projects:
         kind: '*'
 
 applications:
-
-  gitops-local-accounts:
-    annotations:
-      argocd.argoproj.io/sync-wave: '0'
-    source:
-      path: infra/components/gitops-operator/local-accounts-job/base
-      repoURL: https://github.com/coolstore-demo/coolstore.git
-      targetRevision: rhdp
 
   gitea:
     annotations:
