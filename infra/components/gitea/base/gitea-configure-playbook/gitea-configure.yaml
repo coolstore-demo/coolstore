@@ -39,7 +39,7 @@
             url: "{{ item.url }}"
             http_method: "post"
           events:
-            - "push_only"
+            - "push"
           type: "gitea"
         status_code: [201, 400]
       with_items: "{{ webhooks }}"
