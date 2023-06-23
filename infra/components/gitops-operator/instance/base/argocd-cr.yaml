@@ -59,6 +59,45 @@ spec:
   notifications:
     enabled: true
   resourceHealthChecks:
+    - group: objectbucket.io
+      kind: ObjectBucketClaim
+      check: |
+        health_status = {}
+        if obj.status ~= nil then
+          if obj.status.phase == "Bound" then
+            health_status.status = "Healthy"
+          elseif obj.status.phase == "Failed" then
+            health_status.status = "Degraded"
+            health_status.message = "Provisioning of the ObjectBucketClaim failed."
+          elseif obj.status.phase == "Released" then
+            health_status.status = "Degraded"
+            health_status.message = "The claim was released, this should not happen naturally but may arise if the bucket was deleted externally."
+          else
+            health_status.status = "Progressing"
+          return health_status
+          end
+        end
+        health_status.status = "Progressing"
+        health_status.message = "The ObjectBucketClaim is progressing, waiting for status..."
+        return health_status
+    - group: noobaa.io
+      kind: BackingStore
+      check: |
+        health_status = {}
+        if obj.status ~= nil then
+          if obj.status.phase == "Ready" then
+            health_status.status = "Healthy"
+          elseif obj.status.phase == "Rejected" then
+            health_status.status = "Degraded"
+            health_status.message = "BackingStorePhaseRejected means the spec has been rejected by the operator, this is most likely due to an incompatible configuration. See events."
+          else
+            health_status.status = "Progressing"
+          return health_status
+          end
+        end
+        health_status.status = "Progressing"
+        health_status.message = "The BackingStore is progressing, waiting for status..."
+        return health_status
     - group: odf.openshift.io
       kind: StorageSystem
       check: |
