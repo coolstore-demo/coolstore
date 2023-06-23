@@ -89,9 +89,10 @@ spec:
             health_status.status = "Healthy"
           elseif obj.status.phase == "Rejected" then
             health_status.status = "Degraded"
-            health_status.message = "BackingStorePhaseRejected means the spec has been rejected by the operator, this is most likely due to an incompatible configuration. See events."
+            health_status.message = "The spec has been rejected by the operator, this is most likely due to an incompatible configuration. See events."
           else
             health_status.status = "Progressing"
+            health_status.message = "BackingStore is progressing, in phase " + obj.status.phase
           return health_status
           end
         end
@@ -115,9 +116,7 @@ spec:
               elseif (condition.type == "StorageSystemInvalid" and condition.status == "True") or (condition.type == "VendorCsvReady" and condition.status == "False") or (condition.type == "VendorSystemPresent" and condition.status == "False") then
                 health_status.status = "Degraded"
               end
-
             end
-
             health_status.message = msg
             return health_status
           end
