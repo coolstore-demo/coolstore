@@ -4,6 +4,15 @@ resources:
 patches:
   - patch: |-
       - op: replace
+        path: /spec/channel
+        value: stable-4.13
+    target:
+      group: operators.coreos.com
+      kind: Subscription
+      name: odf-operator
+      namespace: openshift-storage
+  - patch: |-
+      - op: replace
         path: /spec/template/spec/containers/0/image
         value: registry.redhat.io/openshift4/ose-cli:latest
     target:
