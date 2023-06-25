@@ -74,8 +74,8 @@ spec:
             health_status.message = "The claim was released, this should not happen naturally but may arise if the bucket was deleted externally."
           else
             health_status.status = "Progressing"
-          return health_status
           end
+          return health_status
         end
         health_status.status = "Progressing"
         health_status.message = "The ObjectBucketClaim is progressing, waiting for status..."
@@ -93,8 +93,8 @@ spec:
           else
             health_status.status = "Progressing"
             health_status.message = "BackingStore is progressing, in phase " + obj.status.phase
-          return health_status
           end
+          return health_status
         end
         health_status.status = "Progressing"
         health_status.message = "The BackingStore is progressing, waiting for status..."
