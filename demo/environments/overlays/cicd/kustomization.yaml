@@ -12,6 +12,7 @@ secretGenerator:
   - secrets/settings.xml
 
 resources:
+- maven-repo-creds-secret.yaml
 - gitea-secret.yaml
 - coolstore-devs-rolebinding.yaml
 - ../../../tekton/tasks/base
