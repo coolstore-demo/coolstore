@@ -15,7 +15,7 @@ spec:
   - default: 1.0.0
     name: IMAGE_TAG
     type: string
-  - default: registry-quay-quay-operator.${SUB_DOMAIN}/coolstore-demo/inventory-quarkus
+  - default: registry-quay-quay-operator.${SUB_DOMAIN}/coolstore/inventory-quarkus
     name: IMAGE_NAME
     type: string
   - default: https://gitea-gitea.${SUB_DOMAIN}/user1/inventory-quarkus.git
@@ -143,7 +143,7 @@ spec:
     - name: GIT_REF
       value: $(params.MANIFESTS_GIT_BRANCH)
     - name: NEW_IMAGE
-      value: registry-quay-quay-operator.${SUB_DOMAIN}/coolstore-demo/inventory-quarkus
+      value: registry-quay-quay-operator.${SUB_DOMAIN}/coolstore/inventory-quarkus
     - name: NEW_DIGEST
       value: $(tasks.buildah.results.IMAGE_DIGEST)
     - name: KUSTOMIZATION_PATH
@@ -185,7 +185,7 @@ spec:
     - name: GIT_REF
       value: $(params.MANIFESTS_GIT_BRANCH)
     - name: NEW_IMAGE
-      value: registry-quay-quay-operator.${SUB_DOMAIN}/coolstore-demo/inventory-quarkus
+      value: registry-quay-quay-operator.${SUB_DOMAIN}/coolstore/inventory-quarkus
     - name: NEW_DIGEST
       value: $(tasks.buildah.results.IMAGE_DIGEST)
     - name: KUSTOMIZATION_PATH
