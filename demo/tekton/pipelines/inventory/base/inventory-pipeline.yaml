@@ -87,7 +87,7 @@ spec:
     runAfter:
     - git-clone
     taskRef:
-      kind: ClusterTask
+      kind: Task
       name: maven
     workspaces:
     - name: maven-settings
@@ -104,7 +104,7 @@ spec:
       - maven
     taskRef:
       name: maven
-      kind: ClusterTask
+      kind: Task
     workspaces:
     - name: maven-settings
       workspace: maven-settings
