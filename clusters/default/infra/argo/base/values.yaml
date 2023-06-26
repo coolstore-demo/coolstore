@@ -117,6 +117,9 @@ applications:
       argocd.argoproj.io/sync-wave: '21'
     source:
       path: infra/components/acs-tokens/base
+      extraSourceFields: |
+        plugin:
+          name: kustomize-envvar
 
   dev-tools:
     annotations:
