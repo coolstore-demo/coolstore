@@ -151,3 +151,6 @@ applications:
       namespace: openshift-gitops
     source:
       path: infra/components/gitops-operator/local-accounts-job/base
+      extraSourceFields: |
+        plugin:
+          name: kustomize-envvar
