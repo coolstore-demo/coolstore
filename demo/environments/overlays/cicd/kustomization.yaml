@@ -12,7 +12,7 @@ secretGenerator:
   - secrets/settings.xml
 
 resources:
-- github-secret.yaml
+- gitea-secret.yaml
 - coolstore-devs-rolebinding.yaml
 - ../../../tekton/tasks/base
 - ../../../tekton/pipelines/common/base
