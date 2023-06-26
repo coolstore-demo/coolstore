@@ -29,9 +29,20 @@ projects:
 
 applications:
 
-  gitea:
+  gitops:
     annotations:
       argocd.argoproj.io/sync-wave: '0'
+    source:
+      path: infra/components/gitops-operator/instance/base
+      repoURL: https://github.com/coolstore-demo/coolstore.git
+      targetRevision: rhdp
+      extraSourceFields: |
+        plugin:
+          name: kustomize-envvar
+
+  gitea:
+    annotations:
+      argocd.argoproj.io/sync-wave: '1'
     source:
       path: infra/components/gitea/base
       repoURL: https://github.com/coolstore-demo/coolstore.git
@@ -48,7 +59,7 @@ applications:
 
   groups:
     annotations:
-      argocd.argoproj.io/sync-wave: '0'
+      argocd.argoproj.io/sync-wave: '1'
     source:
       path: infra/components/groups/base
       repoURL: https://github.com/coolstore-demo/coolstore.git
@@ -56,7 +67,7 @@ applications:
 
   namespaces:
     annotations:
-      argocd.argoproj.io/sync-wave: '1'
+      argocd.argoproj.io/sync-wave: '2'
     destination:
       namespace: openshift-gitops
     source:
@@ -64,7 +75,7 @@ applications:
 
   odf-operator:
     annotations:
-      argocd.argoproj.io/sync-wave: '2'
+      argocd.argoproj.io/sync-wave: '3'
     destination:
       namespace: openshift-storage
     source:
@@ -72,7 +83,7 @@ applications:
 
   odf-instance:
     annotations:
-      argocd.argoproj.io/sync-wave: '3'
+      argocd.argoproj.io/sync-wave: '4'
     destination:
       namespace: openshift-storage
     source:
