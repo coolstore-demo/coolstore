@@ -1,2 +1,4 @@
 resources:
 - cluster-admins.yaml
+- coolstore-admins.yaml
+- coolstore-users.yaml

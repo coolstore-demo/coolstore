@@ -1,0 +1,44 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  annotations:
+    argocd.argoproj.io/tracking-id: bootstrap:argoproj.io/AppProject:openshift-gitops/coolstore
+  name: coolstore
+  namespace: openshift-gitops
+spec:
+  clusterResourceWhitelist:
+  - group: '*'
+    kind: '*'
+  description: Project for coolstore demo
+  destinations:
+  - namespace: coolstore-cicd
+    server: https://kubernetes.default.svc
+  - namespace: coolstore-dev
+    server: https://kubernetes.default.svc
+  - namespace: coolstore-stage
+    server: https://kubernetes.default.svc
+  - namespace: coolstore-prod
+    server: https://kubernetes.default.svc
+  sourceRepos:
+  - https://gitea-gitea.apps.cluster-8vmvx.8vmvx.sandbox2065.opentlc.com/user1/coolstore
+  roles:
+    - description: Coolstore Admins
+      name: admin
+      groups:
+        - coolstore-admins
+      policies:
+        - p, proj:coolstore:admin, applications, *, coolstore/*, allow
+    - description: Coolstore Users
+      name: user
+      groups:
+        - coolstore-users
+      policies:
+        - p, proj:coolstore:user, applications, get, coolstore/*, allow
+        - p, proj:coolstore:user, applications, sync, coolstore/*, allow
+    - description: Pipeline accounts
+      name: pipeline
+      groups:
+        - coolstore-pipeline
+      policies:
+        - p, proj:coolstore:pipeline, applications, get, coolstore/*, allow
+        - p, proj:coolstore:pipeline, applications, sync, coolstore/*, allow

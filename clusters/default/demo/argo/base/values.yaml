@@ -11,27 +11,6 @@ default:
       repoURL: https://gitea-gitea.${SUB_DOMAIN}/user1/coolstore
       targetRevision: rhdp
 
-projects:
-
-  coolstore:
-    description: Project for coolstore demo
-    namespace: openshift-gitops
-    sourceRepos:
-    - https://gitea-gitea.${SUB_DOMAIN}/user1/coolstore
-    destinations: |
-      - namespace: 'coolstore-cicd'
-        server: https://kubernetes.default.svc
-      - namespace: 'coolstore-dev'
-        server: https://kubernetes.default.svc
-      - namespace: 'coolstore-stage'
-        server: https://kubernetes.default.svc
-      - namespace: 'coolstore-prod'
-        server: https://kubernetes.default.svc
-    extraFields: |
-      clusterResourceWhitelist:
-      - group: '*'
-        kind: '*'
-
 applications:
 
   coolstore-cicd:
