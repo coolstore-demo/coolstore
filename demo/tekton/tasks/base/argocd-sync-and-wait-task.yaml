@@ -30,7 +30,7 @@ spec:
           name: argocd-env-secret  # used for authentication (username/password or auth token) and server address
   steps:
     - name: wait-and-sync
-      image: registry.redhat.io/openshift-gitops-1/argocd-rhel8:$(params.gitops-version)
+      image: quay.io/gnunn/tools:latest
       script: |
 
         alias argocd='argocd --insecure'
