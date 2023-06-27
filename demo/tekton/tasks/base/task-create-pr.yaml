@@ -35,7 +35,7 @@ spec:
 
         curl --location 'https://$(params.gitea_server)/api/v1/repos/$(params.repo_owner)/$(params.repo)/pulls' \
         --header 'Content-Type: application/json' \
-        --header 'Authorization: Basic $auth' \
+        --header "Authorization: Basic $auth" \
         --data '{
           "assignee": "user1",
           "base": "rhdp",
