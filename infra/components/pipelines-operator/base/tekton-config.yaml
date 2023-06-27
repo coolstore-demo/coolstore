@@ -29,7 +29,7 @@ spec:
   pipeline:
     await-sidecar-readiness: true
     default-service-account: pipeline
-    disable-affinity-assistant: true
+    disable-affinity-assistant: false
     disable-creds-init: false
     enable-api-fields: stable
     enable-bundles-resolver: true
