@@ -13,32 +13,42 @@ spec:
     type: string
     default: ""
     description: The body of the PR request
-  - name: github_secret
+  - name: branch
     type: string
-    default: github
-    description: "The name of the secret that has your github username and token"
+  - name: gitea_server
+    type: string
+  - name: repo
+    type: string
+  - name: repo_owner
+    type: string
+  - name: git_secret
+    type: string
+    default: gitea
+    description: "The name of the secret that has your gitea username and token"
   steps:
     - name: run-commands
-      image: quay.io/coolstore-demo/github-cli:latest
+      image: registry.access.redhat.com/ubi8-minimal:8.8
       script: |
         #!/usr/bin/env bash
 
-        # git create PR
-        gh pr create -t "$(params.title)" -b "$(params.body)"
+        export data='{"assignee":"$USERNAME","base":"rhdp","head":"$(params.branch)",title":"$(params.title)","body":"$(params.body)"}'
+
+        curl -d $data -H "Content-Type: application/json" -X POST https://$(params.gitea_server)/api/v1/repos/$(params.repo_owner)/$(params.repo)/pulls
+
       workingDir: $(workspaces.source.path)/git-update-digest-workdir
       env:
-        - name: GITHUB_TOKEN
+        - name: PASSWORD
           valueFrom:
             secretKeyRef:
-              name: $(params.github_secret)
+              name: $(params.gitea_secret)
               key: password
-        - name: GITHUB_USER
+        - name: USERNAME
           valueFrom:
             secretKeyRef:
-              name: $(params.github_secret)
+              name: $(params.gitea_secret)
               key: username
-        - name: GITHUB_EMAIL
+        - name: EMAIL
           valueFrom:
             secretKeyRef:
-              name: $(params.github_secret)
+              name: $(params.gitea_secret)
               key: email

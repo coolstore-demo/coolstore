@@ -10,10 +10,13 @@ spec:
   params:
     - name: MANIFESTS_GIT_BRANCH
       type: string
-      default: main
+      default: rhdp
     - name: MANIFESTS_GIT_REPO
       type: string
-      default: https://github.com/coolstore-demo/coolstore
+      default: https://gitea-gitea.${SUB_DOMAIN}/user1/coolstore.git
+    - name: GITEA_SERVER
+      type: string
+      default: gitea-gitea.${SUB_DOMAIN}
     - name: IMAGE
       type: string
       description: External registry location of image to push without tag
@@ -74,6 +77,12 @@ spec:
         - name: source
           workspace: gitops-manifests
       params:
+        - name: repo
+          value: coolstore
+        - name: repo_owner
+          value: user1
+        - name: gitea_server
+          value: $(params.GITEA_SERVER)
         - name: title
           value: Update $(params.APPLICATION_NAME) image to $(params.IMAGE):$(params.IMAGE_TAG)
         - name: body
