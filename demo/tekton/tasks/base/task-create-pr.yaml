@@ -40,15 +40,15 @@ spec:
         - name: PASSWORD
           valueFrom:
             secretKeyRef:
-              name: $(params.gitea_secret)
+              name: $(params.git_secret)
               key: password
         - name: USERNAME
           valueFrom:
             secretKeyRef:
-              name: $(params.gitea_secret)
+              name: $(params.git_secret)
               key: username
         - name: EMAIL
           valueFrom:
             secretKeyRef:
-              name: $(params.gitea_secret)
+              name: $(params.git_secret)
               key: email
