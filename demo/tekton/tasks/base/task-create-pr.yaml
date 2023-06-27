@@ -31,9 +31,18 @@ spec:
       script: |
         #!/usr/bin/env bash
 
-        export data='{"assignee":"$USERNAME","base":"rhdp","head":"$(params.branch)",title":"$(params.title)","body":"$(params.body)"}'
+        auth=$(echo -n "$USERNAME:$PASSWORD" | base64 -w 0)
 
-        curl -d $data -H "Content-Type: application/json" -X POST https://$(params.gitea_server)/api/v1/repos/$(params.repo_owner)/$(params.repo)/pulls
+        curl --location 'https://$(params.gitea_server)/api/v1/repos/$(params.repo_owner)/$(params.repo)/pulls' \
+        --header 'Content-Type: application/json' \
+        --header 'Authorization: Basic $auth' \
+        --data '{
+          "assignee": "user1",
+          "base": "rhdp",
+          "body": "$(params.body)",
+          "head": "$(params.branch)",
+          "title": "$(params.title)"
+        }'
 
       workingDir: $(workspaces.source.path)/git-update-digest-workdir
       env:
