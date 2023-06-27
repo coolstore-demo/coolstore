@@ -83,6 +83,8 @@ spec:
           value: user1
         - name: gitea_server
           value: $(params.GITEA_SERVER)
+        - name: branch
+          value: $(params.APPLICATION_NAME)-$(params.IMAGE_TAG)
         - name: title
           value: Update $(params.APPLICATION_NAME) image to $(params.IMAGE):$(params.IMAGE_TAG)
         - name: body
