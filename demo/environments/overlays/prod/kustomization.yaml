@@ -7,7 +7,7 @@ resources:
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 images:
-- digest: sha256:2131bfb85e9442746e03cdd86683ec87c3d35b0e2bc49ef31cf375620a4b7282
+- digest: sha256:b5ca2976105e4dc5b155272992a7fa876f3b8aafcbbf49288b3cf24639d133df
   name: quay.io/coolstore-demo/inventory-quarkus
 - digest: sha256:fc4776cc06dd91e3541b65c2b1e8f76f3b00839b8499ab04a872fc9ba0fb1e6e
   name: quay.io/coolstore-demo/web-nodejs
