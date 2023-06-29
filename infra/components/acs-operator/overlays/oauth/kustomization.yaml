@@ -10,7 +10,13 @@ patches:
   - patch: |-
       - op: replace
         path: /spec/channel
-        value: 'stable'
+        value: 'rhacs-4.1'
     target:
       kind: Subscription
       name: rhacs-operator
+  - patch: |-
+      - op: replace
+        path: /spec/perNode/collector/collection
+        value: EBPF
+    target:
+      kind: SecuredCluster
