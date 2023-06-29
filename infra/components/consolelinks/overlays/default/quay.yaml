@@ -8,4 +8,6 @@ spec:
   text: Quay
   applicationMenu:
     section: Red Hat Applications
-    imageURL: https://registry-quay-quay-operator.${SUB_DOMAIN}/favicon.png
+    imageURL: https://registry-quay-quay-operator.${SUB_DOMAIN}/static/img/quay_favicon.png
+    
+

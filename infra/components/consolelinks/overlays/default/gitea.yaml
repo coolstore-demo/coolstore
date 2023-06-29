@@ -8,4 +8,4 @@ spec:
   text: Gitea
   applicationMenu:
     section: Tools
-    imageURL: https://gitea-gitea.${SUB_DOMAIN}/favicon.png
+    imageURL: https://gitea-gitea.${SUB_DOMAIN}/assets/img/favicon.png
