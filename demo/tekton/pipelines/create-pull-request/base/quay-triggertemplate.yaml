@@ -19,7 +19,6 @@ spec:
           tekton.dev/pipeline: create-pull-request
         generateName: quay-webhook-
       spec:
-        serviceAccountName: pipeline
         pipelineRef:
           name: create-pull-request
         params:
