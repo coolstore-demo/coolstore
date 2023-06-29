@@ -100,6 +100,14 @@ applications:
         plugin:
           name: kustomize-envvar
 
+  devspaces-operator:
+    annotations:
+      argocd.argoproj.io/sync-wave: '11'
+    destination:
+      namespace: openshift-operators
+    source:
+      path: infra/components/devspaces/operator/base
+
   acs:
     annotations:
       argocd.argoproj.io/sync-wave: '11'
@@ -137,6 +145,17 @@ applications:
         duration: 5s
         factor: 2
         maxDuration: 3m
+
+  devspaces-instance:
+    annotations:
+      argocd.argoproj.io/sync-wave: '21'
+    destination:
+      namespace: devspaces
+    source:
+      path: infra/components/devspaces/instance/base
+      extraSourceFields: |
+        plugin:
+          name: kustomize-envvar
 
   console-links:
     annotations:
