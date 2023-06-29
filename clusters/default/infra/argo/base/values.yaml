@@ -96,6 +96,9 @@ applications:
       namespace: quay-operator
     source:
       path: infra/components/quay-registry-operator/overlays/default
+      extraSourceFields: |
+        plugin:
+          name: kustomize-envvar
 
   acs:
     annotations:
