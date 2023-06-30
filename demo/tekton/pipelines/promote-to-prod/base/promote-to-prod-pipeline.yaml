@@ -1,0 +1,34 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: promote-to-prod
+spec:
+  params:
+    - default: quay.io/coolstore-demo/inventory-quarkus
+      name: IMAGE
+      type: string
+    - default: 1.0.0
+      name: VERSION
+      type: string
+    - default: prod
+      name: TAG
+      type: string
+  tasks:
+    - name: skopeo-copy
+      params:
+        - name: srcImageURL
+          value: 'docker://$(params.IMAGE):$(params.VERSION)'
+        - name: destImageURL
+          value: 'docker://$(params.IMAGE):$(params.TAG)'
+        - name: srcTLSverify
+          value: 'true'
+        - name: destTLSverify
+          value: 'true'
+      taskRef:
+        kind: ClusterTask
+        name: skopeo-copy
+      workspaces:
+        - name: images-url
+          workspace: output
+  workspaces:
+    - name: output
