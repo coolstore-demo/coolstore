@@ -4,6 +4,7 @@ kind: Kustomization
 namespace: coolstore-prod
 
 resources:
+- coolstore-devs-rolebinding.yaml
 - ../../base
 - post-sync-pipeline-job.yaml
 
