@@ -119,6 +119,8 @@ spec:
       value: $(params.MANIFESTS_GIT_REPO)
     - name: GIT_REF
       value: $(params.MANIFESTS_GIT_BRANCH)
+    - name: CURRENT_IMAGE
+      value: quay.io/coolstore-demo/spring-boot-catalog:1.0.0
     - name: NEW_IMAGE
       value: registry-quay-quay-operator.${SUB_DOMAIN}/coolstore/catalog-spring-boot
     - name: NEW_DIGEST

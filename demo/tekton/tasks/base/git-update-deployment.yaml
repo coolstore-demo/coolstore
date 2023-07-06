@@ -17,6 +17,8 @@ spec:
   - name: GIT_REF
     type: string
     default: "main"
+  - name: CURRENT_IMAGE
+    type: string
   - name: NEW_IMAGE
     type: string
   - name: NEW_DIGEST
@@ -52,7 +54,7 @@ spec:
     name: update-digest
     script: |
       cd git-update-digest-workdir/$(params.KUSTOMIZATION_PATH)
-      kustomize edit set image $(params.NEW_IMAGE)@$(params.NEW_DIGEST)
+      kustomize edit set image $(params.CURRENT_IMAGE)=$(params.NEW_IMAGE)@$(params.NEW_DIGEST)
 
       echo "##########################"
       echo "### kustomization.yaml ###"
