@@ -5,4 +5,5 @@ resources:
 - git-credentials.yaml
 - namespace.yaml
 - rolebinding.yaml
+- vscode-template.yaml
 - devworkspace.yaml
