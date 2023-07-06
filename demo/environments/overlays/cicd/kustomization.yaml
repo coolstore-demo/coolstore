@@ -22,4 +22,5 @@ resources:
 - ../../../tekton/pipelines/inventory/base
 - ../../../tekton/pipelines/web/base
 - ../../../tekton/pipelines/create-pull-request/base
+- ../../../tekton/pipelines/promote-to-prod/base
 - setup-local-credentials-job.yaml
