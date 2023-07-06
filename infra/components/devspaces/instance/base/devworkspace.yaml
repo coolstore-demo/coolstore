@@ -88,7 +88,7 @@ spec:
       - name: inventory-quarkus
         git:
           remotes:
-            origin: 'https://github.com/coolstore-demo/inventory-quarkus.git'
+            origin: 'https://gitea-gitea.${SUB_DOMAIN}/user1/inventory-quarkus.git'
     events:
       postStart:
         - package
