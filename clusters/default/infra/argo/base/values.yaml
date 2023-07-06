@@ -150,7 +150,7 @@ applications:
     annotations:
       argocd.argoproj.io/sync-wave: '21'
     destination:
-      namespace: devspaces
+      namespace: user1-devspaces
     source:
       path: infra/components/devspaces/instance/base
       extraSourceFields: |

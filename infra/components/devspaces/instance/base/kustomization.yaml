@@ -1,4 +1,4 @@
-namespace: devspaces
+namespace: user1-devspaces
 
 resources:
 - configmap.yaml
