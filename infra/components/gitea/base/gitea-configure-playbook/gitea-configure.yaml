@@ -45,3 +45,15 @@
           type: "gitea"
         status_code: [201, 400]
       with_items: "{{ webhooks }}"
+
+    - name:  Set default branch of coolstore repo to rhdp
+      uri:
+        url: "{{ gitea_url}}/api/v1/repos/{{ gitea_username }}/coolstore
+        method: PATCH
+        validate_certs: no
+        headers:
+          authorization: "{{ authorization }}"
+        body_format: json
+        body:
+          default_branch: "rhdp"
+        status_code: [200]
