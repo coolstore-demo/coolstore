@@ -1,0 +1,54 @@
+- hosts: localhost
+  connection: local
+
+  vars:
+    deployments:
+      - cluster
+      - kam
+      - openshift-gitops-applicationset-controller
+      - openshift-gitops-redis
+      - openshift-gitops-repo-server
+      - openshift-gitops-server
+
+  tasks:
+    - name: Get Ingress from Cluster
+      k8s_info:
+        api_version: config.openshift.io/v1
+        kind: Ingress
+        name: cluster
+        namespace: openshift-ingress
+      register: ingress
+
+    - name: Get sub_domain from ingress
+      set_fact:
+        sub_domain: "{{ ingress | json_query('resources[0].spec.domain')}}"
+
+    - name: Get instance definition
+      set_fact:
+        openshift_gitops_cr: "{{ lookup('url', 'https://raw.githubusercontent.com/coolstore-demo/coolstore/rhdp/infra/components/gitops-operator/instance/base/argocd-cr.yaml', split_lines=False) | replace('${SUB_DOMAIN}', sub_domain) }}"
+
+    - name: Output definition
+      debug:
+        msg: "{{ openshift_gitops_cr | to_nice_yaml }}"
+
+    - name: Update default gitops instance
+      k8s:
+        state: present
+        definition: "{{ openshift_gitops_cr }}"
+
+    - name: Sleep for 10 seconds
+      wait_for:
+        timeout: 10
+
+    - name: Check that all deployments are up and running
+      command: "oc rollout status deployment {{ item }} -n openshift-gitops"
+      with_items: "{{ deployments }}"
+
+    - name: Load bootstrap application
+      set_fact:
+        bootstrap: "{{ lookup('url', 'https://raw.githubusercontent.com/coolstore-demo/coolstore/rhdp/bootstrap/argo/base/bootstrap.yaml', split_lines=False) }}"
+
+    - name: Create bootstrap application
+      k8s:
+        state: present
+        definition: "{{ bootstrap }}"
