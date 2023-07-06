@@ -27,7 +27,7 @@ spec:
   - default: https://gitea-gitea.${SUB_DOMAIN}/user1/coolstore.git
     name: MANIFESTS_GIT_REPO
     type: string
-  - default: main
+  - default: rhdp
     name: MANIFESTS_GIT_BRANCH
     type: string
   - name: COLLECTION_TESTS_URL
@@ -143,7 +143,7 @@ spec:
     - name: GIT_REF
       value: $(params.MANIFESTS_GIT_BRANCH)
     - name: CURRENT_IMAGE
-      value: quay.io/coolstore-demo/inventory-quarkus:1.0.0
+      value: quay.io/coolstore-demo/inventory-quarkus
     - name: NEW_IMAGE
       value: $(params.IMAGE_NAME)
     - name: NEW_DIGEST
@@ -187,7 +187,7 @@ spec:
     - name: GIT_REF
       value: $(params.MANIFESTS_GIT_BRANCH)
     - name: CURRENT_IMAGE
-      value: quay.io/coolstore-demo/inventory-quarkus:1.0.0
+      value: quay.io/coolstore-demo/inventory-quarkus
     - name: NEW_IMAGE
       value: registry-quay-quay-operator.${SUB_DOMAIN}/coolstore/inventory-quarkus
     - name: NEW_DIGEST

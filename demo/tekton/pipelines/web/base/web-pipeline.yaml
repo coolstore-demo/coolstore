@@ -26,7 +26,7 @@ spec:
   - default: https://gitea-gitea.${SUB_DOMAIN}/user1/coolstore.git
     name: MANIFESTS_GIT_REPO
     type: string
-  - default: main
+  - default: rhdp
     name: MANIFESTS_GIT_BRANCH
     type: string
   - name: SONARQUBE_HOST
@@ -121,7 +121,7 @@ spec:
     - name: GIT_REF
       value: $(params.MANIFESTS_GIT_BRANCH)
     - name: CURRENT_IMAGE
-      value: quay.io/coolstore-demo/web-nodejs:1.0.0
+      value: quay.io/coolstore-demo/web-nodejs
     - name: NEW_IMAGE
       value: registry-quay-quay-operator.${SUB_DOMAIN}/coolstore/web-nodejs
     - name: NEW_DIGEST
@@ -151,7 +151,7 @@ spec:
     - name: GIT_REF
       value: $(params.MANIFESTS_GIT_BRANCH)
     - name: CURRENT_IMAGE
-      value: quay.io/coolstore-demo/web-nodejs:1.0.0
+      value: quay.io/coolstore-demo/web-nodejs
     - name: NEW_IMAGE
       value: registry-quay-quay-operator.${SUB_DOMAIN}/coolstore/web-nodejs
     - name: NEW_DIGEST
