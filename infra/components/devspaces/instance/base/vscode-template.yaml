@@ -2,7 +2,7 @@ apiVersion: workspace.devfile.io/v1alpha2
 kind: DevWorkspaceTemplate
 metadata:
   name: vscode
-  namespace: devspaces
+  namespace: user1-devspaces
 spec:
   components:
     - name: vscode-injector
