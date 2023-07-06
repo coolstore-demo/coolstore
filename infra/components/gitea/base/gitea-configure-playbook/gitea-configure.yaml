@@ -48,7 +48,7 @@
 
     - name:  Set default branch of coolstore repo to rhdp
       uri:
-        url: "{{ gitea_url}}/api/v1/repos/{{ gitea_username }}/coolstore
+        url: "{{ gitea_url}}/api/v1/repos/{{ gitea_username }}/coolstore"
         method: PATCH
         validate_certs: no
         headers:
