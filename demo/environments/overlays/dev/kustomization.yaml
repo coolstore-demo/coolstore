@@ -17,7 +17,3 @@ patches:
   target:
     kind: Deployment
     labelSelector: app=web-nodejs
-images:
-- digest: sha256:9f368deb46cf101190ec3a8c58a8b07764ee557e1fd2f2301bc125f0ea129365
-  name: quay.io/coolstore-demo/inventory-quarkus
-  newName: registry-quay-quay-operator.apps.cluster-djbmw.djbmw.sandbox1929.opentlc.com/coolstore/inventory-quarkus
