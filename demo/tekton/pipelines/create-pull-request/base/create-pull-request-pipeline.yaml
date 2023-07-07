@@ -52,6 +52,8 @@ spec:
       params:
       - name: GIT_REPOSITORY
         value: $(params.MANIFESTS_GIT_REPO)
+      - name: CURRENT_IMAGE
+        value: quay.io/coolstore-demo/inventory-quarkus
       - name: GIT_REF
         value: $(params.MANIFESTS_GIT_BRANCH)
       - name: NEW_IMAGE
