@@ -6,6 +6,9 @@ patches:
       - op: replace
         path: /spec/href
         value: "https://controller-ansible-automation-platform.${SUB_DOMAIN}"
+      - op: replace
+        path: /spec/applicationMenu/section
+        value: "Red Hat Applications"
     target:
       kind: ConsoleLink
       name: controller
