@@ -4,7 +4,7 @@ metadata:
   name: promote-to-prod
 spec:
   params:
-    - default: quay.io/coolstore-demo/inventory-quarkus
+    - default: registry-quay-quay-operator.${SUB_DOMAIN}/coolstore/inventory-quarkus
       name: IMAGE
       type: string
     - default: 1.0.0
