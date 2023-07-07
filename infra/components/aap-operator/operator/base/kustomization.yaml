@@ -1,2 +1,2 @@
 resources:
-- subscription.yaml
+- github.com/redhat-cop/gitops-catalog/ansible-automation-platform/operator/overlays/stable-2.4-cluster-scoped
