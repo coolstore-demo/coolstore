@@ -138,9 +138,10 @@ applications:
         plugin:
           name: kustomize-envvar
 
+  # Not an operator but let's do it in parallel to improve performance
   dev-tools:
     annotations:
-      argocd.argoproj.io/sync-wave: '21'
+      argocd.argoproj.io/sync-wave: '11'
     destination:
       namespace: dev-tools
     source:
