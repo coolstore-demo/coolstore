@@ -23,5 +23,5 @@ spec:
       failed: Try the steps again.
       success: Great work! You join the Dev environment for the Coolstore app and started OpenShift DevSpaces
     title: Coolstore Introduction + Dev Spaces
-  - description: "The Coolstore App relies on **CI/CD pipelines**. \n\n 1. In the projects list, select **coolstore-cicd**\n\n2. Click **Pipelines**, on the left hand side. Take a minute to look through each pipeline. \n\n When a specific pipeline is selected, details such the **tasks, steps, and logs** will be available. \n\n"
+  - description: "The Coolstore App relies on **CI/CD pipelines**. \n\n 1. In the projects list, select **coolstore-cicd**\n\n 2. Click **Pipelines**, on the left hand side. Take a minute to look through each pipeline. \n\n When a specific pipeline is selected, details such the **tasks, steps, and logs** will be available. \n\n"
     title: Pipelines Introduction
