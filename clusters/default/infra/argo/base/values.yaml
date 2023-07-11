@@ -192,3 +192,12 @@ applications:
       extraSourceFields: |
         plugin:
           name: kustomize-envvar
+
+  quickstarts:
+    annotations:
+      argocd.argoproj.io/sync-wave: '31'
+    source:
+      path: infra/components/quickstarts/overlays/default
+      extraSourceFields: |
+        plugin:
+          name: kustomize-envvar
