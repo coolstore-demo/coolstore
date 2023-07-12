@@ -40,6 +40,28 @@ applications:
         plugin:
           name: kustomize-envvar
 
+  quickstarts:
+    annotations:
+      argocd.argoproj.io/sync-wave: '0'
+    source:
+      path: infra/components/quickstarts/overlays/default
+      repoURL: https://github.com/coolstore-demo/coolstore.git
+      targetRevision: rhdp
+      extraSourceFields: |
+        plugin:
+          name: kustomize-envvar
+
+  rhdp-info:
+    annotations:
+      argocd.argoproj.io/sync-wave: '0'
+    source:
+      path: infra/components/rhdp-info/base
+      repoURL: https://github.com/coolstore-demo/coolstore.git
+      targetRevision: rhdp
+      extraSourceFields: |
+        plugin:
+          name: kustomize-envvar
+
   gitea:
     annotations:
       argocd.argoproj.io/sync-wave: '1'
@@ -173,15 +195,6 @@ applications:
         plugin:
           name: kustomize-envvar
 
-  console-links:
-    annotations:
-      argocd.argoproj.io/sync-wave: '31'
-    source:
-      path: infra/components/consolelinks/overlays/default
-      extraSourceFields: |
-        plugin:
-          name: kustomize-envvar
-
   gitops-local-accounts:
     annotations:
       argocd.argoproj.io/sync-wave: '31'
@@ -193,20 +206,11 @@ applications:
         plugin:
           name: kustomize-envvar
 
-  quickstarts:
+  console-links:
     annotations:
       argocd.argoproj.io/sync-wave: '31'
     source:
-      path: infra/components/quickstarts/overlays/default
-      extraSourceFields: |
-        plugin:
-          name: kustomize-envvar
-
-  rhdp-info:
-    annotations:
-      argocd.argoproj.io/sync-wave: '31'
-    source:
-      path: infra/components/rhdp-info/base
+      path: infra/components/consolelinks/overlays/default
       extraSourceFields: |
         plugin:
           name: kustomize-envvar
