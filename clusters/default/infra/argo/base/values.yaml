@@ -201,3 +201,12 @@ applications:
       extraSourceFields: |
         plugin:
           name: kustomize-envvar
+
+  rhpd-info:
+    annotations:
+      argocd.argoproj.io/sync-wave: '31'
+    source:
+      path: infra/components/rhdp-info/base
+      extraSourceFields: |
+        plugin:
+          name: kustomize-envvar
