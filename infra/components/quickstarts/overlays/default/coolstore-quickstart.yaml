@@ -25,3 +25,5 @@ spec:
     title: Coolstore Introduction + Dev Spaces
   - description: "The Coolstore App relies on **CI/CD pipelines**. \n\n 1. In the projects list, select **coolstore-cicd**\n\n 2. Click **Pipelines**, on the left hand side. Take a minute to look through each pipeline. \n\n When a specific pipeline is selected, details such the **tasks, steps, and logs** will be available. \n\n"
     title: Pipelines Introduction
+  - description: "We will check if all applications in GitOps are healthy and synced. \n\n 1. Launch **ArgoCD** \n\n 2. Wait until the last application in the sync wave appears. The command *watch oc get apps -n openshift-gitops* will work as well. \n\n 3. Ensure all applications are running and healthy"
+    title: Health of GitOps Application
