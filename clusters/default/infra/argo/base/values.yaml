@@ -202,7 +202,7 @@ applications:
         plugin:
           name: kustomize-envvar
 
-  rhpd-info:
+  rhdp-info:
     annotations:
       argocd.argoproj.io/sync-wave: '31'
     source:
