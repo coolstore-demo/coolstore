@@ -136,12 +136,6 @@ applications:
     source:
       path: infra/components/acs-operator/overlays/oauth
 
-  aap-operator:
-    annotations:
-      argocd.argoproj.io/sync-wave: '11'
-    source:
-      path: infra/components/aap-operator/operator/base
-
   pipelines:
     annotations:
       argocd.argoproj.io/sync-wave: '11'
@@ -182,15 +176,6 @@ applications:
       namespace: user1-devspaces
     source:
       path: infra/components/devspaces/instance/base
-      extraSourceFields: |
-        plugin:
-          name: kustomize-envvar
-
-  aap-instance:
-    annotations:
-      argocd.argoproj.io/sync-wave: '21'
-    source:
-      path: infra/components/aap-operator/instance/overlays/controller
       extraSourceFields: |
         plugin:
           name: kustomize-envvar
