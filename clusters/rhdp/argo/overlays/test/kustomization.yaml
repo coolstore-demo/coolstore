@@ -1,10 +1,10 @@
 resources:
 - ../../base
 
-patches:
-  - patch: |-
-      - op: replace
-        path: /spec/source/targetRevision
-        value: 3a03a79
-    target:
-      kind: Application
+# patches:
+#   - patch: |-
+#       - op: replace
+#         path: /spec/source/targetRevision
+#         value: 3a03a79
+#     target:
+#       kind: Application
