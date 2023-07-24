@@ -6,14 +6,3 @@ namespace: coolstore-dev
 resources:
 - coolstore-devs-rolebinding.yaml
 - ../../base
-
-patches:
-- patch: |-
-    - op: replace
-      path: /spec/template/spec/containers/0/env/0
-      value:
-        name: SECURE_COOLSTORE_GW_ENDPOINT
-        value: https://gateway-vertx-coolstore-dev.${SUB_DOMAIN}
-  target:
-    kind: Deployment
-    labelSelector: app=web-nodejs
