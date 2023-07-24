@@ -5,7 +5,7 @@ metadata:
   name: inventory-prod-test
 spec:
   resourcetemplates:
-    - apiVersion: tekton.dev/v1beta1
+    - apiVersion: tekton.dev/v1
       kind: PipelineRun
       metadata:
         annotations:
@@ -21,6 +21,6 @@ spec:
         - name: newman-env
           configMap:
             name: newman-env
-        - name: slack-secret
-          secret:
-            secretName: slack-deployments-webhook
+        # - name: slack-secret
+        #   secret:
+        #     secretName: slack-deployments-webhook

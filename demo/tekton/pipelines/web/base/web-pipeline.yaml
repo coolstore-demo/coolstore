@@ -1,4 +1,4 @@
-apiVersion: tekton.dev/v1beta1
+apiVersion: tekton.dev/v1
 kind: Pipeline
 metadata:
   name: web-pipeline
@@ -14,25 +14,25 @@ spec:
   - default: 1.0.0
     name: IMAGE_TAG
     type: string
-  - default: quay.io/coolstore-demo/web-nodejs
+  - default: registry-quay-quay-operator.${SUB_DOMAIN}/coolstore/web-nodejs
     name: IMAGE_NAME
     type: string
-  - default: https://github.com/coolstore-demo/web-nodejs.git
+  - default: https://gitea-gitea.${SUB_DOMAIN}/user1/web-nodejs.git
     name: GIT_REPO
     type: string
   - default: main
     name: GIT_BRANCH
     type: string
-  - default: https://github.com/coolstore-demo/coolstore
+  - default: https://gitea-gitea.${SUB_DOMAIN}/user1/coolstore.git
     name: MANIFESTS_GIT_REPO
     type: string
-  - default: main
+  - default: rhdp
     name: MANIFESTS_GIT_BRANCH
     type: string
   - name: SONARQUBE_HOST
     type: string
     description: Hostname for sonarqube
-    default: sonarqube-dev-tools.apps.summit23soul.197v.p1.openshiftapps.com
+    default: sonarqube-dev-tools.${SUB_DOMAIN}
   tasks:
   - name: variables
     taskRef:
@@ -120,8 +120,10 @@ spec:
       value: $(params.MANIFESTS_GIT_REPO)
     - name: GIT_REF
       value: $(params.MANIFESTS_GIT_BRANCH)
-    - name: NEW_IMAGE
+    - name: CURRENT_IMAGE
       value: quay.io/coolstore-demo/web-nodejs
+    - name: NEW_IMAGE
+      value: registry-quay-quay-operator.${SUB_DOMAIN}/coolstore/web-nodejs
     - name: NEW_DIGEST
       value: $(tasks.buildah.results.IMAGE_DIGEST)
     - name: KUSTOMIZATION_PATH
@@ -148,8 +150,10 @@ spec:
       value: $(params.MANIFESTS_GIT_REPO)
     - name: GIT_REF
       value: $(params.MANIFESTS_GIT_BRANCH)
-    - name: NEW_IMAGE
+    - name: CURRENT_IMAGE
       value: quay.io/coolstore-demo/web-nodejs
+    - name: NEW_IMAGE
+      value: registry-quay-quay-operator.${SUB_DOMAIN}/coolstore/web-nodejs
     - name: NEW_DIGEST
       value: $(tasks.buildah.results.IMAGE_DIGEST)
     - name: KUSTOMIZATION_PATH

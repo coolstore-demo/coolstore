@@ -1,0 +1,201 @@
+default:
+  app:
+    enabled: true
+    enableAutoSync: true
+    autoSyncPrune: false
+    project: cluster-config
+    destination:
+      namespace: openshift-gitops
+      server: https://kubernetes.default.svc
+    source:
+      repoURL: https://gitea-gitea.${SUB_DOMAIN}/user1/coolstore
+      targetRevision: rhdp
+
+projects:
+
+  cluster-config:
+    description: Cluster Configuration
+    namespace: openshift-gitops
+    sourceRepos:
+    - https://github.com/coolstore-demo/coolstore.git
+    - https://gitea-gitea.${SUB_DOMAIN}/user1/coolstore
+    destinations: |
+      - namespace: '*'
+        server: https://kubernetes.default.svc
+    extraFields: |
+      clusterResourceWhitelist:
+      - group: '*'
+        kind: '*'
+
+applications:
+
+  gitops:
+    annotations:
+      argocd.argoproj.io/sync-wave: '0'
+    source:
+      path: infra/components/gitops-operator/instance/base
+      repoURL: https://github.com/coolstore-demo/coolstore.git
+      targetRevision: rhdp
+      extraSourceFields: |
+        plugin:
+          name: kustomize-envvar
+
+  quickstarts:
+    annotations:
+      argocd.argoproj.io/sync-wave: '0'
+    source:
+      path: infra/components/quickstarts/overlays/default
+      repoURL: https://github.com/coolstore-demo/coolstore.git
+      targetRevision: rhdp
+      extraSourceFields: |
+        plugin:
+          name: kustomize-envvar
+
+  rhdp-info:
+    annotations:
+      argocd.argoproj.io/sync-wave: '0'
+    source:
+      path: infra/components/rhdp-info/base
+      repoURL: https://github.com/coolstore-demo/coolstore.git
+      targetRevision: rhdp
+      extraSourceFields: |
+        plugin:
+          name: kustomize-envvar
+
+  gitea:
+    annotations:
+      argocd.argoproj.io/sync-wave: '1'
+    source:
+      path: infra/components/gitea/base
+      repoURL: https://github.com/coolstore-demo/coolstore.git
+      targetRevision: rhdp
+      extraSourceFields: |
+        plugin:
+          name: kustomize-envvar
+    syncPolicyRetry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m
+
+  groups:
+    annotations:
+      argocd.argoproj.io/sync-wave: '1'
+    source:
+      path: infra/components/groups/base
+      repoURL: https://github.com/coolstore-demo/coolstore.git
+      targetRevision: rhdp
+
+  namespaces:
+    annotations:
+      argocd.argoproj.io/sync-wave: '2'
+    destination:
+      namespace: openshift-gitops
+    source:
+      path: infra/components/namespaces/base
+
+  odf-operator:
+    annotations:
+      argocd.argoproj.io/sync-wave: '3'
+    destination:
+      namespace: openshift-storage
+    source:
+      path: infra/components/odf-operator/operator/overlays/no-registry
+
+  odf-instance:
+    annotations:
+      argocd.argoproj.io/sync-wave: '4'
+    destination:
+      namespace: openshift-storage
+    source:
+      path: infra/components/odf-operator/instance/base
+
+  quay-operator:
+    annotations:
+      argocd.argoproj.io/sync-wave: '11'
+    destination:
+      namespace: quay-operator
+    source:
+      path: infra/components/quay-registry-operator/overlays/default
+      extraSourceFields: |
+        plugin:
+          name: kustomize-envvar
+
+  devspaces-operator:
+    annotations:
+      argocd.argoproj.io/sync-wave: '11'
+    destination:
+      namespace: openshift-operators
+    source:
+      path: infra/components/devspaces/operator/base
+
+  acs:
+    annotations:
+      argocd.argoproj.io/sync-wave: '11'
+    source:
+      path: infra/components/acs-operator/overlays/oauth
+
+  pipelines:
+    annotations:
+      argocd.argoproj.io/sync-wave: '11'
+    destination:
+      namespace: openshift-pipelines
+    source:
+      path: infra/components/pipelines-operator/overlays/chains
+
+  # Generates ACS tokens for Pipelines to consume
+  acs-tokens:
+    annotations:
+      argocd.argoproj.io/sync-wave: '21'
+    source:
+      path: infra/components/acs-tokens/base
+      extraSourceFields: |
+        plugin:
+          name: kustomize-envvar
+
+  # Not an operator but let's do it in parallel to improve performance
+  dev-tools:
+    annotations:
+      argocd.argoproj.io/sync-wave: '11'
+    destination:
+      namespace: dev-tools
+    source:
+      path: infra/components/dev-tools/overlays/default
+    syncPolicyRetry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m
+
+  devspaces-instance:
+    annotations:
+      argocd.argoproj.io/sync-wave: '21'
+    destination:
+      namespace: user1-devspaces
+    source:
+      path: infra/components/devspaces/instance/base
+      extraSourceFields: |
+        plugin:
+          name: kustomize-envvar
+
+  gitops-local-accounts:
+    annotations:
+      argocd.argoproj.io/sync-wave: '31'
+    destination:
+      namespace: openshift-gitops
+    source:
+      path: infra/components/gitops-operator/local-accounts-job/base
+      extraSourceFields: |
+        plugin:
+          name: kustomize-envvar
+
+  console-links:
+    annotations:
+      argocd.argoproj.io/sync-wave: '31'
+    source:
+      path: infra/components/consolelinks/overlays/default
+      extraSourceFields: |
+        plugin:
+          name: kustomize-envvar

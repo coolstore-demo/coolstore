@@ -1,4 +1,0 @@
-resources:
-- ../../../../../../demo/environments/overlays/prod
-
-# ARO route patch goes here

@@ -1,4 +1,5 @@
 resources:
+- m2-cache-pvc.yaml
 - git-update-deployment.yaml
 - argocd-sync-and-wait-task.yaml
 - rox-image-check-task.yaml
@@ -10,3 +11,5 @@ resources:
 - task-npm.yaml
 - task-npm-quality.yaml
 - task-send-to-webhook-slack.yaml
+- task-generate-id.yaml
+- github.com/redhat-cop/gitops-catalog/openshift-pipelines-tasks/maven/overlays/m2-cache

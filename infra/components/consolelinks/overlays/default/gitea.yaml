@@ -1,0 +1,11 @@
+apiVersion: console.openshift.io/v1
+kind: ConsoleLink
+metadata:
+  name: gitea
+spec:
+  href: 'https://gitea-gitea.${SUB_DOMAIN}'
+  location: ApplicationMenu
+  text: Gitea
+  applicationMenu:
+    section: Tools
+    imageURL: https://gitea-gitea.${SUB_DOMAIN}/assets/img/favicon.png

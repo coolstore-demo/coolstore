@@ -1,0 +1,7 @@
+resources:
+- namespace.yaml
+# - https://raw.githubusercontent.com/redhat-gpte-devopsautomation/gitea-operator/master/catalog_source.yaml
+- https://github.com/rhpds/gitea-operator/OLMDeploy?ref=63fe240dce048f38454e17acd3424b146f828d39
+- gitea.yaml
+- user-password-secret.yaml
+- configure-gitea-job.yaml

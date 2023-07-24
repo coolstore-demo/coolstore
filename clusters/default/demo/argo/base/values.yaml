@@ -1,0 +1,58 @@
+default:
+  app:
+    enabled: true
+    enableAutoSync: true
+    autoSyncPrune: false
+    project: coolstore
+    destination:
+      namespace: openshift-gitops
+      server: https://kubernetes.default.svc
+    source:
+      repoURL: https://gitea-gitea.${SUB_DOMAIN}/user1/coolstore
+      targetRevision: rhdp
+
+applications:
+
+  coolstore-cicd:
+    annotations:
+      argocd.argoproj.io/sync-wave: '51'
+    destination:
+      namespace: coolstore-cicd
+    source:
+      path: demo/environments/overlays/cicd
+      extraSourceFields: |
+        plugin:
+          name: kustomize-envvar
+
+  coolstore-dev:
+    annotations:
+      argocd.argoproj.io/sync-wave: '51'
+    destination:
+      namespace: coolstore-dev
+    source:
+      path: demo/environments/overlays/dev
+      extraSourceFields: |
+        plugin:
+          name: kustomize-envvar
+
+  coolstore-stage:
+    annotations:
+      argocd.argoproj.io/sync-wave: '51'
+    destination:
+      namespace: coolstore-stage
+    source:
+      path: demo/environments/overlays/stage
+      extraSourceFields: |
+        plugin:
+          name: kustomize-envvar
+
+  coolstore-prod:
+    annotations:
+      argocd.argoproj.io/sync-wave: '51'
+    destination:
+      namespace: coolstore-prod
+    source:
+      path: demo/environments/overlays/prod
+      extraSourceFields: |
+        plugin:
+          name: kustomize-envvar

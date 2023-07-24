@@ -1,0 +1,43 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: configure-gitea
+  namespace: gitea
+  annotations:
+    argocd.argoproj.io/sync-wave: "20"
+spec:
+  template:
+    spec:
+      containers:
+        - image: registry.redhat.io/ansible-automation-platform-21/ee-supported-rhel8:1.0
+          envFrom:
+          - secretRef:
+              name: user-password
+          env:
+          - name: sub_domain
+            value: ${SUB_DOMAIN}
+          command:
+            - /bin/bash
+            - -c
+            - |
+              #!/usr/bin/env bash
+
+              echo "Setup temporary OCP user to make ansible happy"
+
+              echo "tempuser:x:$(id -u):$(id -g):,,,:${HOME}:/bin/bash" >> /etc/passwd
+              echo "tempuser:x:$(id -G | cut -d' ' -f 2)" >> /etc/group
+              id
+
+              git clone https://github.com/coolstore-demo/coolstore
+              cd coolstore
+              git checkout rhdp
+              cd infra/components/gitea/base/gitea-configure-playbook
+
+              ansible-playbook gitea-configure.yaml -e gitea_password=$password -e sub_domain=$sub_domain
+
+          name: configure-gitea
+      dnsPolicy: ClusterFirst
+      restartPolicy: Never
+      terminationGracePeriodSeconds: 30
+      serviceAccount: default
+      serviceAccountName: default

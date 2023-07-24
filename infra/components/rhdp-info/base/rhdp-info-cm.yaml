@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: userinfo
+  namespace: openshift-gitops
+  labels:
+    demo.redhat.com/userinfo: ""
+data:
+  quickstart: "https://console-openshift-console.${SUB_DOMAIN}/quickstart?quickstart=red-hat-coolstore"

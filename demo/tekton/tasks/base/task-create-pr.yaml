@@ -1,4 +1,4 @@
-apiVersion: tekton.dev/v1beta1
+apiVersion: tekton.dev/v1
 kind: Task
 metadata:
   name: task-create-pr
@@ -13,32 +13,51 @@ spec:
     type: string
     default: ""
     description: The body of the PR request
-  - name: github_secret
+  - name: branch
     type: string
-    default: github
-    description: "The name of the secret that has your github username and token"
+  - name: gitea_server
+    type: string
+  - name: repo
+    type: string
+  - name: repo_owner
+    type: string
+  - name: git_secret
+    type: string
+    default: gitea
+    description: "The name of the secret that has your gitea username and token"
   steps:
     - name: run-commands
-      image: quay.io/coolstore-demo/github-cli:latest
+      image: registry.access.redhat.com/ubi8-minimal:8.8
       script: |
         #!/usr/bin/env bash
 
-        # git create PR
-        gh pr create -t "$(params.title)" -b "$(params.body)"
+        auth=$(echo -n "$USERNAME:$PASSWORD" | base64 -w 0)
+
+        curl --location 'https://$(params.gitea_server)/api/v1/repos/$(params.repo_owner)/$(params.repo)/pulls' \
+        --header 'Content-Type: application/json' \
+        --header "Authorization: Basic $auth" \
+        --data '{
+          "assignee": "user1",
+          "base": "rhdp",
+          "body": "$(params.body)",
+          "head": "$(params.branch)",
+          "title": "$(params.title)"
+        }'
+
       workingDir: $(workspaces.source.path)/git-update-digest-workdir
       env:
-        - name: GITHUB_TOKEN
+        - name: PASSWORD
           valueFrom:
             secretKeyRef:
-              name: $(params.github_secret)
+              name: $(params.git_secret)
               key: password
-        - name: GITHUB_USER
+        - name: USERNAME
           valueFrom:
             secretKeyRef:
-              name: $(params.github_secret)
+              name: $(params.git_secret)
               key: username
-        - name: GITHUB_EMAIL
+        - name: EMAIL
           valueFrom:
             secretKeyRef:
-              name: $(params.github_secret)
+              name: $(params.git_secret)
               key: email

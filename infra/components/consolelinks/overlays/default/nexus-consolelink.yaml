@@ -3,9 +3,9 @@ kind: ConsoleLink
 metadata:
   name: nexus
 spec:
-  href: 'https://nexus-dev-tools.apps.summit23soul.197v.p1.openshiftapps.com'
+  href: 'https://nexus-dev-tools.${SUB_DOMAIN}'
   location: ApplicationMenu
   text: Nexus
   applicationMenu:
     section: Tools
-    imageURL: https://nexus-dev-tools.apps.summit23soul.197v.p1.openshiftapps.com/favicon.png
+    imageURL: https://nexus-dev-tools.${SUB_DOMAIN}/favicon.png

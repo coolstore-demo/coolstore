@@ -1,0 +1,13 @@
+apiVersion: console.openshift.io/v1
+kind: ConsoleLink
+metadata:
+  name: quay
+spec:
+  href: 'https://registry-quay-quay-operator.${SUB_DOMAIN}'
+  location: ApplicationMenu
+  text: Quay
+  applicationMenu:
+    section: Red Hat Applications
+    imageURL: https://registry-quay-quay-operator.${SUB_DOMAIN}/static/img/quay_favicon.png
+    
+

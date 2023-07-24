@@ -1,0 +1,5 @@
+namespace: openshift-operators
+
+resources:
+- subscription.yaml
+- checluster-cr.yaml

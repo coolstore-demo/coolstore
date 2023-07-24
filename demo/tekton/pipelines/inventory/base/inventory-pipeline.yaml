@@ -15,28 +15,28 @@ spec:
   - default: 1.0.0
     name: IMAGE_TAG
     type: string
-  - default: quay.io/coolstore-demo/inventory-quarkus
+  - default: registry-quay-quay-operator.${SUB_DOMAIN}/coolstore/inventory-quarkus
     name: IMAGE_NAME
     type: string
-  - default: https://github.com/coolstore-demo/inventory-quarkus.git
+  - default: https://gitea-gitea.${SUB_DOMAIN}/user1/inventory-quarkus.git
     name: GIT_REPO
     type: string
   - default: main
     name: GIT_BRANCH
     type: string
-  - default: https://github.com/coolstore-demo/coolstore
+  - default: https://gitea-gitea.${SUB_DOMAIN}/user1/coolstore.git
     name: MANIFESTS_GIT_REPO
     type: string
-  - default: main
+  - default: rhdp
     name: MANIFESTS_GIT_BRANCH
     type: string
   - name: COLLECTION_TESTS_URL
     type: string
-    default: https://raw.githubusercontent.com/coolstore-demo/inventory-quarkus/main/tests/inventory-quarkus-tests.json
+    default: https://gitea-gitea.${SUB_DOMAIN}/user1/inventory-quarkus/raw/branch/main/tests/inventory-quarkus-tests.json
   - name: SONARQUBE_HOST
     type: string
     description: Hostname for sonarqube
-    default: sonarqube-dev-tools.apps.summit23soul.197v.p1.openshiftapps.com
+    default: sonarqube-dev-tools.${SUB_DOMAIN}
   tasks:
   - name: variables
     taskRef:
@@ -87,7 +87,7 @@ spec:
     runAfter:
     - git-clone
     taskRef:
-      kind: ClusterTask
+      kind: Task
       name: maven
     workspaces:
     - name: maven-settings
@@ -104,7 +104,7 @@ spec:
       - maven
     taskRef:
       name: maven
-      kind: ClusterTask
+      kind: Task
     workspaces:
     - name: maven-settings
       workspace: maven-settings
@@ -142,8 +142,10 @@ spec:
       value: $(params.MANIFESTS_GIT_REPO)
     - name: GIT_REF
       value: $(params.MANIFESTS_GIT_BRANCH)
-    - name: NEW_IMAGE
+    - name: CURRENT_IMAGE
       value: quay.io/coolstore-demo/inventory-quarkus
+    - name: NEW_IMAGE
+      value: $(params.IMAGE_NAME)
     - name: NEW_DIGEST
       value: $(tasks.buildah.results.IMAGE_DIGEST)
     - name: KUSTOMIZATION_PATH
@@ -184,8 +186,10 @@ spec:
       value: $(params.MANIFESTS_GIT_REPO)
     - name: GIT_REF
       value: $(params.MANIFESTS_GIT_BRANCH)
-    - name: NEW_IMAGE
+    - name: CURRENT_IMAGE
       value: quay.io/coolstore-demo/inventory-quarkus
+    - name: NEW_IMAGE
+      value: registry-quay-quay-operator.${SUB_DOMAIN}/coolstore/inventory-quarkus
     - name: NEW_DIGEST
       value: $(tasks.buildah.results.IMAGE_DIGEST)
     - name: KUSTOMIZATION_PATH
@@ -324,7 +328,7 @@ spec:
                 "type": "section",
                 "text": {
                   "type": "mrkdwn",
-                  "text": "* <https://console-openshift-console.apps.summit23soul.197v.p1.openshiftapps.com/k8s/ns/coolstore-cicd/tekton.dev~v1beta1~PipelineRun/$(context.pipelineRun.name)|PipelineRun>\n* <$(params.IMAGE_NAME):$(params.IMAGE_TAG)|Quay Image>\n* <https://$(tasks.variables.results.acs_central_endpoint)/main/vulnerability-management/images/$(tasks.buildah.results.IMAGE_DIGEST)|ACS Scan>\n* <https://$(params.SONARQUBE_HOST)/dashboard?id=inventory-quarkus|SonarQube>"
+                  "text": "* <https://console-openshift-console.${SUB_DOMAIN}/k8s/ns/coolstore-cicd/tekton.dev~v1beta1~PipelineRun/$(context.pipelineRun.name)|PipelineRun>\n* <$(params.IMAGE_NAME):$(params.IMAGE_TAG)|Quay Image>\n* <https://$(tasks.variables.results.acs_central_endpoint)/main/vulnerability-management/images/$(tasks.buildah.results.IMAGE_DIGEST)|ACS Scan>\n* <https://$(params.SONARQUBE_HOST)/dashboard?id=inventory-quarkus|SonarQube>"
                 }
               },
               {

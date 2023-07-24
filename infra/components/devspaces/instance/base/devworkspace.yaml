@@ -1,0 +1,94 @@
+apiVersion: workspace.devfile.io/v1alpha2
+kind: DevWorkspace
+metadata:
+  name: inventory-quarkus
+  namespace: user1-devspaces
+spec:
+  routingClass: che
+  started: true
+  contributions:
+    - name: editor
+      kubernetes:
+        name: vscode
+  template:
+    components:
+      - name: tools
+        container:
+          image: quay.io/devfile/universal-developer-image:ubi8-latest
+          env:
+            - name: QUARKUS_HTTP_HOST
+              value: 0.0.0.0
+          endpoints:
+            - exposure: none
+              name: debug
+              protocol: tcp
+              targetPort: 5005
+            - exposure: none
+              name: test
+              protocol: http
+              targetPort: 8081
+            - exposure: public
+              name: inventory
+              protocol: http
+              targetPort: 8080
+              path: /
+          memoryRequest: 5Mi
+          memoryLimit: 6G
+          cpuRequest: 1000m
+          cpuLimit: 4000m
+    commands:
+      - id: package
+        exec:
+          label: "1. Package"
+          component: tools
+          workingDir: ${PROJECTS_ROOT}/inventory-quarkus
+          commandLine: "./mvnw clean package -DskipTests=true"
+          group:
+            kind: build
+            isDefault: true
+      - id: runtests
+        exec:
+          label: "2. Run Tests"
+          component: tools
+          workingDir: ${PROJECTS_ROOT}/inventory-quarkus
+          commandLine: "./mvnw test"
+          group:
+            kind: test
+      - id: startdev
+        exec:
+          label: "3. Start Development mode (Hot reload + debug)"
+          component: tools
+          workingDir: ${PROJECTS_ROOT}/inventory-quarkus
+          commandLine: "./mvnw compile quarkus:dev"
+          group:
+            kind: run
+            isDefault: true
+      - id: buildimage
+        exec:
+          label: "4. Build Image"
+          component: tools
+          workingDir: ${PROJECT_SOURCE}
+          commandLine: |
+            IMAGE=image-registry.openshift-image-registry.svc:5000/openshift/quarkus-api-example
+            podman build -f src/main/docker/Dockerfile.jvm -t "${IMAGE}" .
+          group:
+            kind: build
+      - id: pushimage
+        exec:
+          label: "5. Push Image"
+          component: tools
+          commandLine: |
+            # Requires `oc policy add-role-to-user registry-editor <user_name> -n openshift`
+            IMAGE=image-registry.openshift-image-registry.svc:5000/openshift/quarkus-api-example
+            podman login --tls-verify=false -u $(oc whoami) -p $(oc whoami -t) image-registry.openshift-image-registry.svc:5000
+            podman push --tls-verify=false "${IMAGE}"
+          group:
+            kind: build
+    projects:
+      - name: inventory-quarkus
+        git:
+          remotes:
+            origin: 'https://gitea-gitea.${SUB_DOMAIN}/user1/inventory-quarkus.git'
+    events:
+      postStart:
+        - package

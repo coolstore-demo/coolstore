@@ -1,0 +1,9 @@
+namespace: user1-devspaces
+
+resources:
+- configmap.yaml
+- git-credentials.yaml
+- namespace.yaml
+- rolebinding.yaml
+- vscode-template.yaml
+- devworkspace.yaml

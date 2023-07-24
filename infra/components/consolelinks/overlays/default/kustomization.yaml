@@ -5,3 +5,5 @@ resources:
 - acs-consolelink.yaml
 - nexus-consolelink.yaml
 - sonarqube-consolelink.yaml
+- gitea.yaml
+- quay.yaml

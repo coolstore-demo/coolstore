@@ -12,21 +12,20 @@ spec:
     - name: homepage
     - name: updated_tag
   resourcetemplates:
-    - apiVersion: tekton.dev/v1beta1
+    - apiVersion: tekton.dev/v1
       kind: PipelineRun
       metadata:
         labels:
           tekton.dev/pipeline: create-pull-request
         generateName: quay-webhook-
       spec:
-        serviceAccountName: pipeline
         pipelineRef:
           name: create-pull-request
         params:
           - name: MANIFESTS_GIT_BRANCH
-            value: main
+            value: rhdp
           - name: MANIFESTS_GIT_REPO
-            value: 'https://github.com/coolstore-demo/coolstore'
+            value: 'https://gitea-gitea.${SUB_DOMAIN}/user1/coolstore'
           - name: IMAGE
             value: $(tt.params.docker_url)
           - name: IMAGE_TAG
@@ -34,7 +33,7 @@ spec:
           - name: APPLICATION_NAME
             value: $(tt.params.name)
           - name: SONARQUBE_HOST
-            value: sonarqube-dev-tools.apps.summit23soul.197v.p1.openshiftapps.com
+            value: sonarqube-dev-tools.${SUB_DOMAIN}
         workspaces:
           - name: gitops-manifests
             persistentVolumeClaim:

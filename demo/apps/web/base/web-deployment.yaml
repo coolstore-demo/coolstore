@@ -36,7 +36,7 @@ spec:
           env:
             - name: SECURE_COOLSTORE_GW_ENDPOINT
               value: >-
-                https://gateway-vertx-coolstore-prod.apps.summit23soul.197v.p1.openshiftapps.com/
+                https://gateway-vertx-coolstore-prod.${SUB_DOMAIN}/
           resources: {}
           terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: File

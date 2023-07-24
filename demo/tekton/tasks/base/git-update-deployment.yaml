@@ -1,4 +1,4 @@
-apiVersion: tekton.dev/v1beta1
+apiVersion: tekton.dev/v1
 kind: Task
 metadata:
   annotations:
@@ -17,6 +17,8 @@ spec:
   - name: GIT_REF
     type: string
     default: "main"
+  - name: CURRENT_IMAGE
+    type: string
   - name: NEW_IMAGE
     type: string
   - name: NEW_DIGEST
@@ -33,7 +35,6 @@ spec:
   steps:
   - image: docker.io/alpine/git:v2.26.2
     name: git-clone
-    resources: {}
     script: |
       rm -rf git-update-digest-workdir
 
@@ -51,10 +52,9 @@ spec:
     workingDir: $(workspaces.workspace.path)
   - image: quay.io/wpernath/kustomize-ubi:latest
     name: update-digest
-    resources: {}
     script: |
       cd git-update-digest-workdir/$(params.KUSTOMIZATION_PATH)
-      kustomize edit set image $(params.NEW_IMAGE)@$(params.NEW_DIGEST)
+      kustomize edit set image $(params.CURRENT_IMAGE)=$(params.NEW_IMAGE)@$(params.NEW_DIGEST)
 
       echo "##########################"
       echo "### kustomization.yaml ###"
@@ -63,7 +63,6 @@ spec:
     workingDir: $(workspaces.workspace.path)
   - image: docker.io/alpine/git:v2.26.2
     name: git-commit
-    resources: {}
     script: |
       cd git-update-digest-workdir
 
