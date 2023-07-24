@@ -10,7 +10,7 @@ spec:
   params:
     - name: MANIFESTS_GIT_BRANCH
       type: string
-      default: rhdp
+      default: main
     - name: MANIFESTS_GIT_REPO
       type: string
       default: https://gitea-gitea.${SUB_DOMAIN}/user1/coolstore.git

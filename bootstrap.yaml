@@ -25,7 +25,7 @@
 
     - name: Get instance definition
       set_fact:
-        openshift_gitops_cr: "{{ lookup('url', 'https://raw.githubusercontent.com/coolstore-demo/coolstore/rhdp/infra/components/gitops-operator/instance/base/argocd-cr.yaml', split_lines=False) | replace('${SUB_DOMAIN}', sub_domain) }}"
+        openshift_gitops_cr: "{{ lookup('url', 'https://raw.githubusercontent.com/coolstore-demo/coolstore/main/infra/components/gitops-operator/instance/base/argocd-cr.yaml', split_lines=False) | replace('${SUB_DOMAIN}', sub_domain) }}"
 
     - name: Output definition
       debug:
@@ -46,7 +46,7 @@
 
     - name: Load bootstrap application
       set_fact:
-        bootstrap: "{{ lookup('url', 'https://raw.githubusercontent.com/coolstore-demo/coolstore/rhdp/bootstrap/argo/base/bootstrap.yaml', split_lines=False) }}"
+        bootstrap: "{{ lookup('url', 'https://raw.githubusercontent.com/coolstore-demo/coolstore/main/bootstrap/argo/base/bootstrap.yaml', split_lines=False) }}"
 
     - name: Create bootstrap application
       k8s:

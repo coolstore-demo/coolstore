@@ -38,7 +38,7 @@ spec:
         --header "Authorization: Basic $auth" \
         --data '{
           "assignee": "user1",
-          "base": "rhdp",
+          "base": "main",
           "body": "$(params.body)",
           "head": "$(params.branch)",
           "title": "$(params.title)"

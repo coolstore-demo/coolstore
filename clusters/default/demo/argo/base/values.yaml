@@ -9,7 +9,7 @@ default:
       server: https://kubernetes.default.svc
     source:
       repoURL: https://gitea-gitea.${SUB_DOMAIN}/user1/coolstore
-      targetRevision: rhdp
+      targetRevision: main
 
 applications:
 

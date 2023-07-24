@@ -23,7 +23,7 @@ spec:
           name: create-pull-request
         params:
           - name: MANIFESTS_GIT_BRANCH
-            value: rhdp
+            value: main
           - name: MANIFESTS_GIT_REPO
             value: 'https://gitea-gitea.${SUB_DOMAIN}/user1/coolstore'
           - name: IMAGE
