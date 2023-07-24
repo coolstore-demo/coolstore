@@ -90,9 +90,12 @@ spec:
           elseif obj.status.phase == "Rejected" then
             health_status.status = "Degraded"
             health_status.message = "The spec has been rejected by the operator, this is most likely due to an incompatible configuration. See events."
+          elseif obj.status.phase == "Creating" then
+            health_status.status = "Progressing"
+            health_status.message = "The BackingStore is creating..."
           else
             health_status.status = "Progressing"
-            health_status.message = "BackingStore is progressing, in phase " + obj.status.phase
+            health_status.message = "BackingStore is progressing..."
           end
           return health_status
         end
